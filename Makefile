@@ -938,10 +938,14 @@ DEBUG_CFLAGS	+= -femit-struct-debug-baseonly
 endif
 endif
 
-ifdef CONFIG_DEBUG_INFO_COMPRESSED
+ifdef CONFIG_DEBUG_INFO_COMPRESSED_ZLIB
 DEBUG_CFLAGS	+= -gz=zlib
 KBUILD_AFLAGS	+= -gz=zlib
 KBUILD_LDFLAGS	+= --compress-debug-sections=zlib
+else ifdef CONFIG_DEBUG_INFO_COMPRESSED_ZSTD
+DEBUG_CFLAGS	+= -gz=zstd
+KBUILD_AFLAGS	+= -gz=zstd
+KBUILD_LDFLAGS	+= --compress-debug-sections=zstd
 endif
 
 endif # CONFIG_DEBUG_INFO
