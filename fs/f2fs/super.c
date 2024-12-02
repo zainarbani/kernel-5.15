@@ -1806,8 +1806,6 @@ static void f2fs_put_super(struct super_block *sb)
 	kvfree(sbi->ckpt);
 
 	sb->s_fs_info = NULL;
-	if (sbi->s_chksum_driver)
-		crypto_free_shash(sbi->s_chksum_driver);
 	kfree(sbi->raw_super);
 
 	destroy_device_list(sbi);
@@ -4361,15 +4359,6 @@ try_onemore:
 
 	sbi->sb = sb;
 
-	/* Load the checksum driver */
-	sbi->s_chksum_driver = crypto_alloc_shash("crc32", 0, 0);
-	if (IS_ERR(sbi->s_chksum_driver)) {
-		f2fs_err(sbi, "Cannot load crc32 driver.");
-		err = PTR_ERR(sbi->s_chksum_driver);
-		sbi->s_chksum_driver = NULL;
-		goto free_sbi;
-	}
-
 	/* set a block size */
 	if (unlikely(!sb_set_blocksize(sb, F2FS_BLKSIZE))) {
 		f2fs_err(sbi, "unable to set blocksize");
@@ -4853,8 +4842,6 @@ free_options:
 free_sb_buf:
 	kfree(raw_super);
 free_sbi:
-	if (sbi->s_chksum_driver)
-		crypto_free_shash(sbi->s_chksum_driver);
 	kfree(sbi);
 
 	/* give only one another chance */
@@ -5063,4 +5050,3 @@ MODULE_AUTHOR("Samsung Electronics's Praesto Team");
 MODULE_DESCRIPTION("Flash Friendly File System");
 MODULE_LICENSE("GPL");
 MODULE_IMPORT_NS(ANDROID_GKI_VFS_EXPORT_ONLY);
-MODULE_SOFTDEP("pre: crc32");
