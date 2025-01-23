@@ -12,6 +12,8 @@
 #define CPU_MAX INT_MAX
 #endif
 
+#define GPU_FREQ_STOCK_KHZ_MAX (949000)
+
 #ifdef CONFIG_SOC_S5E8835_GPU_OC
 /*******************************************
  * Overclocked frequencies 
