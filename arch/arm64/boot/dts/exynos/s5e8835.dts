@@ -4691,7 +4691,7 @@
 			max-freq = <0x294280>;
 			min-freq = <0x82208>;
 			fast-switch;
-			thread-run-on = "0-3";
+			thread-run-on = "4-7";
 			#cooling-cells = <0x02>;
 			ect-coeff-index = <0x00>;
 			tz-cooling-name = "BIG";
