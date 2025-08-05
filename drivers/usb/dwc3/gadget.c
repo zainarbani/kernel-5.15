@@ -2674,6 +2674,15 @@ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
 
 static int dwc3_gadget_soft_connect(struct dwc3 *dwc)
 {
+	/*
+	 * In the Synopsys DWC_usb31 1.90a programming guide section
+	 * 4.1.9, it specifies that for a reconnect after a
+	 * device-initiated disconnect requires a core soft reset
+	 * (DCTL.CSftRst) before enabling the run/stop bit.
+	 */
+	dwc3_core_soft_reset(dwc);
+
+	dwc3_event_buffers_setup(dwc);
 	__dwc3_gadget_start(dwc);
 	return dwc3_gadget_run_stop(dwc, true);
 }
@@ -2693,12 +2702,8 @@ static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
 	 */
 	if (!is_on) {
 		pm_runtime_barrier(dwc->dev);
-		if (pm_runtime_suspended(dwc->dev) ||
-				(dwc->current_dr_role != DWC3_GCTL_PRTCAP_DEVICE)) {
-			pr_info("%s: current_dr_role = %d\n", __func__, dwc->current_dr_role);
-
+		if (pm_runtime_suspended(dwc->dev))
 			return 0;
-		}
 	}
 
 	/*
@@ -2708,15 +2713,6 @@ static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
 	 */
 	ret = pm_runtime_get_sync(dwc->dev);
 	if (!ret || ret < 0) {
-		pr_info("%s: dwc3->connected = %d\n", __func__, dwc->connected);
-		dwc->connected = false;
-		pm_runtime_put(dwc->dev);
-		return 0;
-	}
-
-	if ((is_on != 0) && (!(dwc->ev_buf->flags & BIT(20)))) {
-		pr_info("%s: dwc3->connected = %d\n", __func__, dwc->connected);
-		pr_info("%s: ev_buf->BIT(20) = %d\n", __func__, dwc->ev_buf->flags & BIT(20));
 		pm_runtime_put(dwc->dev);
 		if (ret < 0)
 			pm_runtime_set_suspended(dwc->dev);
@@ -2728,34 +2724,15 @@ static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
 		return 0;
 	}
 
-	if (is_on)
-		phy_set_mode(dwc->usb2_generic_phy, 1); //dp pull-up enable
-	else
-		phy_set_mode(dwc->usb2_generic_phy, 0); //dp pull-up disable
-
 	synchronize_irq(dwc->irq_gadget);
 
-	if (!is_on) {
+	if (!is_on)
 		ret = dwc3_gadget_soft_disconnect(dwc);
-	} else {
-		__dwc3_gadget_start(dwc);
-		ret = dwc3_gadget_run_stop(dwc, true);
-	}
-
-	if (is_on) {
-		ret = dwc3_gadget_set_link_state(dwc, DWC3_LINK_STATE_RX_DET);
-		if (ret)
-			dev_info(dwc->dev, "failed to put link in RX_DET\n");
-	}
-
-	if (!is_on) {
-		pr_info("%s: 50ms delay after runstop on sw disconnect\n", __func__);
-		mdelay(50);
-	}
+	else
+		ret = dwc3_gadget_soft_connect(dwc);
 
 	pm_runtime_put(dwc->dev);
 
-	pr_info("%s ---\n", __func__);
 	return ret;
 }
 
