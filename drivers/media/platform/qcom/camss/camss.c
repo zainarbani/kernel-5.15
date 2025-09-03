@@ -1477,7 +1477,7 @@ void camss_delete(struct camss *camss)
  *
  * Always returns 0.
  */
-static void camss_remove(struct platform_device *pdev)
+static int camss_remove(struct platform_device *pdev)
 {
 	struct camss *camss = platform_get_drvdata(pdev);
 
@@ -1487,6 +1487,8 @@ static void camss_remove(struct platform_device *pdev)
 
 	if (atomic_read(&camss->ref_count) == 0)
 		camss_delete(camss);
+
+	return 0;
 }
 
 static const struct of_device_id camss_dt_match[] = {
@@ -1517,7 +1519,7 @@ static const struct dev_pm_ops camss_pm_ops = {
 
 static struct platform_driver qcom_camss_driver = {
 	.probe = camss_probe,
-	.remove_new = camss_remove,
+	.remove = camss_remove,
 	.driver = {
 		.name = "qcom-camss",
 		.of_match_table = camss_dt_match,
