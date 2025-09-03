@@ -435,12 +435,14 @@ err0:
 	return ret;
 }
 
-static void omap2430_remove(struct platform_device *pdev)
+static int omap2430_remove(struct platform_device *pdev)
 {
 	struct omap2430_glue *glue = platform_get_drvdata(pdev);
 
 	platform_device_unregister(glue->musb);
 	pm_runtime_disable(glue->dev);
+
+	return 0;
 }
 
 #ifdef CONFIG_PM
@@ -572,7 +574,7 @@ MODULE_DEVICE_TABLE(of, omap2430_id_table);
 
 static struct platform_driver omap2430_driver = {
 	.probe		= omap2430_probe,
-	.remove_new	= omap2430_remove,
+	.remove		= omap2430_remove,
 	.driver		= {
 		.name	= "musb-omap2430",
 		.pm	= DEV_PM_OPS,
