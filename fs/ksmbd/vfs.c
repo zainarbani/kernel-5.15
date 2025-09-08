@@ -753,7 +753,7 @@ retry:
 		err = -EEXIST;
 		goto out4;
 	}
-	/* @fs.sec -- e90bd089805bbf88e82176c16f63c85f -- */
+
 	flags &= ~(RENAME_NOREPLACE);
 
 	if (old_child == trap) {

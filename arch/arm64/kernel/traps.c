@@ -608,6 +608,7 @@ out_err:
 		secdbg_dump_kernel_instr_ext(regs);
 	}
 	do_s3c2410wdt_builtin_expire_watchdog();
+
 	die("Oops - Undefined instruction", regs, esr);
 }
 

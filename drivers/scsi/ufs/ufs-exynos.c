@@ -543,7 +543,6 @@ static void exynos_ufs_set_features(struct ufs_hba *hba)
 	if (ufs->ah8_ahit == 0)
 		hba->caps |= UFSHCD_CAP_HIBERN8_WITH_CLK_GATING;
 
-
 	/* quirks of common driver */
 	hba->quirks = UFSHCI_QUIRK_SKIP_RESET_INTR_AGGR |
 			UFSHCD_QUIRK_ALIGN_SG_WITH_PAGE_SIZE |
