@@ -15,4 +15,11 @@ dtbo-y += \
 	a54x/a54x_eur_open_w00_r03.dtbo \
 	a54x/a54x_eur_open_w00_r05.dtbo \
 	a54x/a54x_eur_open_w00_r10.dtbo
+
+# A546S
+dtbo-y += \
+	a54x/a54x_kor_skt_w00_r00.dtbo \
+	a54x/a54x_kor_skt_w00_r02.dtbo \
+	a54x/a54x_kor_skt_w00_r03.dtbo \
+	a54x/a54x_kor_skt_w00_r05.dtbo
 endif
