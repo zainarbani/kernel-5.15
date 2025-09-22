@@ -37,6 +37,10 @@ extern void escape_to_root();
 static const char sh_path[] = "/system/bin/sh";
 static const char ksud_path[] = KSUD_PATH;
 static const char su[] = SU_PATH;
+static const char *ksu_allow_service_list[] = {
+    "epic", // samsung epic daemon
+    "flags_health_ch" // samsung flags_health_check daemon
+};
 
 static inline void __user *userspace_stack_buffer(const void *d, size_t len)
 {
@@ -81,6 +85,20 @@ static __always_inline bool is_su_allowed(const void *ptr_to_check)
         return true;
 }
 
+static bool ksu_is_allow_service(const char *comm_name)
+{
+    int i;
+
+    for (i = 0; i < ARRAY_SIZE(ksu_allow_service_list); i++) {
+        if (strcmp(comm_name, ksu_allow_service_list[i]) == 0) {
+            pr_debug("faccessat allowed service: %s\n", comm_name);
+            return true;
+        }
+    }
+
+    return false;
+}
+
 static int ksu_sucompat_user_common(const char __user **filename_user,
                                 const char *syscall_name,
                                 const bool escalate)
@@ -92,6 +110,9 @@ static int ksu_sucompat_user_common(const char __user **filename_user,
 #endif
         if (ksu_copy_from_user_retry(path, *filename_user, sizeof(path)))
                 return 0;
+
+        if (ksu_is_allow_service(current->comm))
+                return 0; 
 
         path[sizeof(path) - 1] = '\0';
 
