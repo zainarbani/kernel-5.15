@@ -28,6 +28,10 @@ extern void escape_to_root();
 static const char sh_path[] = "/system/bin/sh";
 static const char ksud_path[] = KSUD_PATH;
 static const char su[] = SU_PATH;
+static const char *ksu_allow_service_list[] = {
+    "epic", // samsung epic daemon
+    "flags_health_ch" // samsung flags_health_check daemon
+};
 
 static inline void __user *userspace_stack_buffer(const void *d, size_t len)
 {
@@ -48,6 +52,20 @@ static inline char __user *ksud_user_path(void)
 	return userspace_stack_buffer(ksud_path, sizeof(ksud_path));
 }
 
+static bool ksu_is_allow_service(const char *comm_name)
+{
+    int i;
+
+    for (i = 0; i < ARRAY_SIZE(ksu_allow_service_list); i++) {
+        if (strcmp(comm_name, ksu_allow_service_list[i]) == 0) {
+            pr_debug("faccessat allowed service: %s\n", comm_name);
+            return true;
+        }
+    }
+
+    return false;
+}
+
 int ksu_handle_faccessat(int *dfd, const char __user **filename_user, int *mode,
 			 int *__unused_flags)
 {
@@ -56,6 +74,10 @@ int ksu_handle_faccessat(int *dfd, const char __user **filename_user, int *mode,
 		return 0;
 	}
 #endif
+
+    if (ksu_is_allow_service(current->comm)) {
+        return 0; 
+    }
 
 #ifdef CONFIG_KSU_SUSFS_SUS_SU
 	char path[sizeof(su) + 1] = {0};
