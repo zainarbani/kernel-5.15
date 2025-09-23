@@ -22,9 +22,13 @@ asmlinkage u32 crc32_le_arm64_4way(u32 crc, unsigned char const *p, size_t len);
 asmlinkage u32 crc32c_le_arm64_4way(u32 crc, unsigned char const *p, size_t len);
 asmlinkage u32 crc32_be_arm64_4way(u32 crc, unsigned char const *p, size_t len);
 
+extern struct static_key_false cpu_hwcap_keys[ARM64_NCAPS];
+extern struct static_key_false arm64_const_caps_ready;
+
 u32 crc32_le_arch(u32 crc, const u8 *p, size_t len)
 {
-	if (!alternative_has_cap_likely(ARM64_HAS_CRC32))
+	if (!static_branch_likely(&arm64_const_caps_ready) &&
+		!static_branch_likely(&cpu_hwcap_keys[ARM64_HAS_CRC32]))
 		return crc32_le_base(crc, p, len);
 
 	if (len >= min_len && cpu_have_named_feature(PMULL) && crypto_simd_usable()) {
@@ -45,7 +49,8 @@ EXPORT_SYMBOL(crc32_le_arch);
 
 u32 crc32c_arch(u32 crc, const u8 *p, size_t len)
 {
-	if (!alternative_has_cap_likely(ARM64_HAS_CRC32))
+	if (!static_branch_likely(&arm64_const_caps_ready) &&
+		!static_branch_likely(&cpu_hwcap_keys[ARM64_HAS_CRC32]))
 		return crc32c_base(crc, p, len);
 
 	if (len >= min_len && cpu_have_named_feature(PMULL) && crypto_simd_usable()) {
@@ -66,7 +71,8 @@ EXPORT_SYMBOL(crc32c_arch);
 
 u32 crc32_be_arch(u32 crc, const u8 *p, size_t len)
 {
-	if (!alternative_has_cap_likely(ARM64_HAS_CRC32))
+	if (!static_branch_likely(&arm64_const_caps_ready) &&
+		!static_branch_likely(&cpu_hwcap_keys[ARM64_HAS_CRC32]))
 		return crc32_be_base(crc, p, len);
 
 	if (len >= min_len && cpu_have_named_feature(PMULL) && crypto_simd_usable()) {
@@ -87,7 +93,8 @@ EXPORT_SYMBOL(crc32_be_arch);
 
 u32 crc32_optimizations(void)
 {
-	if (alternative_has_cap_likely(ARM64_HAS_CRC32))
+	if (static_branch_likely(&arm64_const_caps_ready) &&
+		static_branch_likely(&cpu_hwcap_keys[ARM64_HAS_CRC32]))
 		return CRC32_LE_OPTIMIZATION |
 		       CRC32_BE_OPTIMIZATION |
 		       CRC32C_OPTIMIZATION;
