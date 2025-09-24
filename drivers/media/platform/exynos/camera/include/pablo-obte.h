@@ -44,7 +44,7 @@ enum v4l2_cid_pablo_obte_config_bit {
 #if IS_ENABLED(CONFIG_PABLO_OBTE_SUPPORT)
 bool pablo_obte_is_running(void);
 
-int __nocfi pablo_obte_init_3aa(u32 instance, bool flag);
+int pablo_obte_init_3aa(u32 instance, bool flag);
 void pablo_obte_deinit_3aa(u32 instance);
 
 void pablo_obte_setcount_ssx_open(u32 id, s32 status);

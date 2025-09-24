@@ -1425,7 +1425,7 @@ p_err:
 /*
  * Timer
  */
-static enum hrtimer_restart __nocfi ddk_timer(struct hrtimer *timer)
+static enum hrtimer_restart ddk_timer(struct hrtimer *timer)
 {
 	struct lib_timer *t = container_of(timer, struct lib_timer, dtimer);
 	int ret;
@@ -1437,7 +1437,7 @@ static enum hrtimer_restart __nocfi ddk_timer(struct hrtimer *timer)
 	return HRTIMER_NORESTART;
 }
 
-int __nocfi is_timer_create(int timer_id, void *func, void *data)
+int is_timer_create(int timer_id, void *func, void *data)
 {
 	struct is_lib_support *lib = &lib_support;
 	struct lib_timer *t = NULL;
@@ -1457,7 +1457,7 @@ int __nocfi is_timer_create(int timer_id, void *func, void *data)
 	return 0;
 }
 
-int __nocfi is_timer_delete(int timer_id)
+int is_timer_delete(int timer_id)
 {
 	struct is_lib_support *lib = &lib_support;
 
@@ -1471,18 +1471,18 @@ int __nocfi is_timer_delete(int timer_id)
 	return 0;
 }
 
-int __nocfi is_timer_reset(void *timer, ulong expires)
+int is_timer_reset(void *timer, ulong expires)
 {
 	return 0;
 }
 
-int __nocfi is_timer_query(void *timer, ulong timerValue)
+int is_timer_query(void *timer, ulong timerValue)
 {
 	/* TODO: will be IMPLEMENTED */
 	return 0;
 }
 
-int __nocfi is_timer_enable(int timer_id, u32 timeout_ms)
+int is_timer_enable(int timer_id, u32 timeout_ms)
 {
 	struct is_lib_support *lib = &lib_support;
 	struct lib_timer *t = NULL;
@@ -1504,7 +1504,7 @@ int __nocfi is_timer_enable(int timer_id, u32 timeout_ms)
 	return 0;
 }
 
-int __nocfi is_timer_disable(int timer_id)
+int is_timer_disable(int timer_id)
 {
 	struct is_lib_support *lib = &lib_support;
 	struct lib_timer *t = NULL;
@@ -1941,7 +1941,7 @@ ulong get_reg_addr(u32 id)
 	return reg_addr;
 }
 
-static void __nocfi lib_task_work(struct kthread_work *work)
+static void lib_task_work(struct kthread_work *work)
 {
 	struct is_task_work *cur_work;
 
@@ -2271,7 +2271,7 @@ void is_lib_flush_task_handler(int priority)
 #endif
 }
 
-static int __nocfi pablo_lib_heap_mem_alloc_dynamic(struct is_mem *mem, struct is_minfo *minfo, int type)
+static int pablo_lib_heap_mem_alloc_dynamic(struct is_mem *mem, struct is_minfo *minfo, int type)
 {
 	u32 env_args[4], heap_size;
 
@@ -3375,7 +3375,7 @@ KUNIT_EXPORT_SYMBOL(pablo_kunit_get_os_system_func);
 
 #define INDEX_VRA_BIN	0
 #define INDEX_ISP_BIN	1
-int __nocfi is_load_ddk_bin(int loadType)
+int is_load_ddk_bin(int loadType)
 {
 	int ret = 0;
 	char bin_type[4] = {0};
@@ -3527,7 +3527,7 @@ fail:
 	return ret;
 }
 
-int __nocfi is_load_vra_bin(int loadType)
+int is_load_vra_bin(int loadType)
 {
 #ifdef USE_ONE_BINARY
 	/* VRA binary loading was included in ddk binary */
@@ -3580,7 +3580,7 @@ fail:
 #endif
 }
 
-int __nocfi is_load_rta_bin(int loadType)
+int is_load_rta_bin(int loadType)
 {
 	int ret = 0;
 #ifdef USE_RTA_BINARY
@@ -4027,7 +4027,7 @@ int pablo_lib_init_mem(struct is_mem *mem)
 	return 0;
 }
 
-int __nocfi pablo_lib_register_sensor_itf(void *sensor_itf)
+int pablo_lib_register_sensor_itf(void *sensor_itf)
 {
 	int ret;
 	register_sensor_interface register_sensor_itf;

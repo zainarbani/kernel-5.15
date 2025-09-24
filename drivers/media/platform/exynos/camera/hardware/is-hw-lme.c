@@ -66,7 +66,7 @@ IS_TIMER_FUNC(is_hw_frame_end_timer)
 }
 #endif
 
-static int __nocfi is_hw_lme_open(struct is_hw_ip *hw_ip, u32 instance)
+static int is_hw_lme_open(struct is_hw_ip *hw_ip, u32 instance)
 {
 	int ret = 0;
 	struct is_hw_lme *hw_lme = NULL;

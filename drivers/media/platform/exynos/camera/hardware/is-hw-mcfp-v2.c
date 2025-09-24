@@ -418,7 +418,7 @@ static int is_hw_mcfp_set_cmdq(struct is_hw_ip *hw_ip, u32 num_buffers, struct c
 	return 0;
 }
 
-static int __nocfi is_hw_mcfp_open(struct is_hw_ip *hw_ip, u32 instance)
+static int is_hw_mcfp_open(struct is_hw_ip *hw_ip, u32 instance)
 {
 	int ret = 0;
 	struct is_hw_mcfp *hw_mcfp;

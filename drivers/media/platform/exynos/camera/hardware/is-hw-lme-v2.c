@@ -289,7 +289,7 @@ static int is_hw_lme_set_cmdq(struct is_hw_ip *hw_ip, u32 instance, u32 set_id)
 	return ret;
 }
 
-static int __nocfi is_hw_lme_open(struct is_hw_ip *hw_ip, u32 instance)
+static int is_hw_lme_open(struct is_hw_ip *hw_ip, u32 instance)
 {
 	int ret;
 	struct is_hw_lme *hw_lme = NULL;

@@ -97,7 +97,7 @@ static bool pablo_hw_helper_set_rta_regs(struct is_hw_ip *hw_ip, u32 instance, u
 	return false;
 }
 
-static int __nocfi pablo_hw_helper_open(struct is_hw_ip *hw_ip, u32 instance, void *lib,
+static int pablo_hw_helper_open(struct is_hw_ip *hw_ip, u32 instance, void *lib,
 					u32 lf_type)
 {
 	int ret;

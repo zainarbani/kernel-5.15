@@ -60,7 +60,7 @@ static struct is_field sysreg_is_fields[SYSREG_IS_REG_FIELD_CNT] = {
 
 void __iomem *hwfc_rst;
 
-static inline void __nocfi __is_isr_ddk(void *data, int handler_id)
+static inline void __is_isr_ddk(void *data, int handler_id)
 {
 	struct is_interface_hwip *itf_hw = NULL;
 	struct hwip_intr_handler *intr_hw = NULL;

@@ -203,7 +203,7 @@ static void is_lib_vra_callback_post_detect_ready(u32 instance,
 	}
 }
 
-int __nocfi is_lib_vra_set_post_detect_output(struct is_lib_vra *lib_vra,
+int is_lib_vra_set_post_detect_output(struct is_lib_vra *lib_vra,
 	unsigned int hfd_enable, u32 instance)
 {
 	enum api_vra_type status = VRA_NO_ERROR;
@@ -307,7 +307,7 @@ int is_lib_vra_invoke_contol_event(struct is_lib_vra *lib_vra)
 	return 0;
 }
 
-int __nocfi is_lib_vra_invoke_fwalgs_event(struct is_lib_vra *lib_vra)
+int is_lib_vra_invoke_fwalgs_event(struct is_lib_vra *lib_vra)
 {
 	enum api_vra_type status = VRA_NO_ERROR;
 
@@ -343,7 +343,7 @@ int __nocfi is_lib_vra_invoke_fwalgs_event(struct is_lib_vra *lib_vra)
 	return 0;
 }
 
-void __nocfi is_lib_vra_task_work(struct kthread_work *work)
+void is_lib_vra_task_work(struct kthread_work *work)
 {
 	struct is_task_work *cur_work;
 	struct is_lib_vra *lib_vra;
@@ -434,7 +434,7 @@ void is_lib_vra_set_event_fw_algs(u32 event_type)
 	return;
 }
 
-int __nocfi is_lib_vra_alloc_memory(struct is_lib_vra *lib_vra, ulong dma_addr)
+int is_lib_vra_alloc_memory(struct is_lib_vra *lib_vra, ulong dma_addr)
 {
 	int index;
 	u32 size;
@@ -551,7 +551,7 @@ int is_lib_vra_free_memory(struct is_lib_vra *lib_vra)
 	return 0;
 }
 
-int __nocfi is_lib_vra_init_frame_work(struct is_lib_vra *lib_vra,
+int is_lib_vra_init_frame_work(struct is_lib_vra *lib_vra,
 	void __iomem *base_addr, enum is_lib_vra_input_type input_type)
 {
 	int ret;
@@ -661,7 +661,7 @@ free:
 	return ret;
 }
 
-int __nocfi is_lib_vra_init_frame_desc(struct is_lib_vra *lib_vra, u32 instance)
+int is_lib_vra_init_frame_desc(struct is_lib_vra *lib_vra, u32 instance)
 {
 	enum api_vra_type status;
 	int ret = 0;
@@ -769,7 +769,7 @@ int is_lib_vra_frame_desc_init(struct is_lib_vra *lib_vra,
 	return 0;
 }
 
-int __nocfi is_lib_vra_set_orientation(struct is_lib_vra *lib_vra,
+int is_lib_vra_set_orientation(struct is_lib_vra *lib_vra,
 	u32 scaler_orientation, u32 instance)
 {
 	enum api_vra_type status = VRA_NO_ERROR;
@@ -845,7 +845,7 @@ int __nocfi is_lib_vra_set_orientation(struct is_lib_vra *lib_vra,
 	return 0;
 }
 
-int __nocfi is_lib_vra_new_frame(struct is_lib_vra *lib_vra,
+int is_lib_vra_new_frame(struct is_lib_vra *lib_vra,
 	unsigned char *buffer_kva, unsigned char *buffer_dva, u32 instance)
 {
 	enum api_vra_type status = VRA_NO_ERROR;
@@ -881,7 +881,7 @@ int __nocfi is_lib_vra_new_frame(struct is_lib_vra *lib_vra,
 	return 0;
 }
 
-int __nocfi is_lib_vra_handle_interrupt(struct is_lib_vra *lib_vra, u32 id)
+int is_lib_vra_handle_interrupt(struct is_lib_vra *lib_vra, u32 id)
 {
 	enum api_vra_type result;
 
@@ -946,7 +946,7 @@ int is_lib_vra_stop_instance(struct is_lib_vra *lib_vra, u32 instance)
 	return 0;
 }
 
-int __nocfi is_lib_vra_stop(struct is_lib_vra *lib_vra)
+int is_lib_vra_stop(struct is_lib_vra *lib_vra)
 {
 	int ret;
 	enum api_vra_type result;
@@ -982,7 +982,7 @@ int __nocfi is_lib_vra_stop(struct is_lib_vra *lib_vra)
 	return 0;
 }
 
-int __nocfi is_lib_vra_frame_work_final(struct is_lib_vra *lib_vra)
+int is_lib_vra_frame_work_final(struct is_lib_vra *lib_vra)
 {
 	enum api_vra_type result;
 	int ret;
@@ -1278,7 +1278,7 @@ struct is_lib_vra *is_lib_vra_get(void)
 	return g_lib_vra;
 }
 
-void __nocfi is_lib_vra_os_funcs(void)
+void is_lib_vra_os_funcs(void)
 {
 	struct is_lib_vra_os_system_funcs funcs;
 
@@ -1320,7 +1320,7 @@ void is_lib_vra_check_size(struct api_vra_input_desc *frame_desc, struct vra_par
 	return;
 }
 
-int __nocfi is_lib_vra_test_input(struct is_lib_vra *lib_vra, u32 instance)
+int is_lib_vra_test_input(struct is_lib_vra *lib_vra, u32 instance)
 {
 	enum api_vra_type status;
 	struct api_vra_input_desc *frame_desc;
@@ -1370,7 +1370,7 @@ int __nocfi is_lib_vra_test_input(struct is_lib_vra *lib_vra, u32 instance)
 	return 0;
 }
 
-int __nocfi is_lib_vra_otf_input(struct is_lib_vra *lib_vra,
+int is_lib_vra_otf_input(struct is_lib_vra *lib_vra,
 	struct vra_param *param, u32 instance, u32 fcount)
 {
 	enum api_vra_type status;
@@ -1424,7 +1424,7 @@ int __nocfi is_lib_vra_otf_input(struct is_lib_vra *lib_vra,
 	return 0;
 }
 
-int __nocfi is_lib_vra_dma_input(struct is_lib_vra *lib_vra,
+int is_lib_vra_dma_input(struct is_lib_vra *lib_vra,
 	struct vra_param *param, u32 instance, u32 fcount)
 {
 	enum api_vra_type status;
@@ -1505,7 +1505,7 @@ int __nocfi is_lib_vra_dma_input(struct is_lib_vra *lib_vra,
 	return 0;
 }
 
-int __nocfi is_lib_vra_apply_tune(struct is_lib_vra *lib_vra,
+int is_lib_vra_apply_tune(struct is_lib_vra *lib_vra,
 	struct is_lib_vra_tune_data *vra_tune, u32 instance)
 {
 	struct is_lib_vra_tune_data tune;
@@ -1628,7 +1628,7 @@ debug_info_s_param:
 }
 
 #ifdef ENABLE_VRA_CHANGE_SETFILE_PARSING
-int __nocfi is_lib_vra_copy_tune_set(struct is_lib_vra *lib_vra,
+int is_lib_vra_copy_tune_set(struct is_lib_vra *lib_vra,
 	ulong addr, u32 size, u32 index, int flag, u32 instance_id)
 {
 	int ret = 0;
@@ -1656,7 +1656,7 @@ int __nocfi is_lib_vra_copy_tune_set(struct is_lib_vra *lib_vra,
 	return ret;
 }
 
-int __nocfi is_lib_vra_apply_tune_set(struct is_lib_vra *lib_vra,
+int is_lib_vra_apply_tune_set(struct is_lib_vra *lib_vra,
 	u32 index, u32 instance_id)
 {
 	int ret = 0;
@@ -1681,7 +1681,7 @@ int __nocfi is_lib_vra_apply_tune_set(struct is_lib_vra *lib_vra,
 #endif
 
 #ifdef ENABLE_VRA_OVERFLOW_RECOVERY
-int __nocfi is_lib_vra_reset_recovery(struct is_lib_vra *lib_vra,
+int is_lib_vra_reset_recovery(struct is_lib_vra *lib_vra,
 		u32 instance_id)
 {
 	int ret = 0;

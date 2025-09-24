@@ -293,7 +293,7 @@ static void is_hw_vra_reset(struct is_hw_ip *hw_ip)
 	is_vra_chain1_set_clear_intr(hw_ip->regs[REG_SETA], all_intr);
 }
 
-static int __nocfi is_hw_vra_open(struct is_hw_ip *hw_ip, u32 instance,
+static int is_hw_vra_open(struct is_hw_ip *hw_ip, u32 instance,
 	struct is_group *group)
 {
 	int ret = 0;

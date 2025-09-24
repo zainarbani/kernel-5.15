@@ -636,7 +636,7 @@ static void __is_hw_3aa_core_init(struct is_hw_ip *hw_ip)
 	taa_hw_s_module_init(hw_ip->regs[REG_SETA]);
 }
 
-static int __nocfi is_hw_3aa_open(struct is_hw_ip *hw_ip, u32 instance)
+static int is_hw_3aa_open(struct is_hw_ip *hw_ip, u32 instance)
 {
 	int ret;
 	struct is_hw_3aa *hw;

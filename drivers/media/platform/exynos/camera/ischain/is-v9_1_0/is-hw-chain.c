@@ -348,7 +348,7 @@ static const struct is_field sysreg_lme_fields[SYSREG_LME_REG_FIELD_CNT] = {
 
 static void __iomem *hwfc_rst;
 
-static inline void __nocfi __is_isr_ddk(void *data, int handler_id)
+static inline void __is_isr_ddk(void *data, int handler_id)
 {
 	struct is_interface_hwip *itf_hw = NULL;
 	struct hwip_intr_handler *intr_hw = NULL;
@@ -383,7 +383,7 @@ static inline void __is_isr_host(void *data, int handler_id)
 /*
  * Interrupt handler definitions
  */
-static void __nocfi __is_isr4_3aax_common(int handler_id)
+static void __is_isr4_3aax_common(int handler_id)
 {
 	struct is_lib_support *lib = is_get_lib_support();
 	struct hwip_intr_handler intr_hw;
@@ -1511,7 +1511,7 @@ void is_hw_csi_qchannel_enable_all(bool enable)
 }
 #endif
 
-void __nocfi is_hw_interrupt_relay(struct is_group *group, void *hw_ip_data)
+void is_hw_interrupt_relay(struct is_group *group, void *hw_ip_data)
 {
 	struct is_group *child;
 	struct is_hw_ip *hw_ip = (struct is_hw_ip *)hw_ip_data;

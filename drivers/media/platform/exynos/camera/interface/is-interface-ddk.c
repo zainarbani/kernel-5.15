@@ -344,7 +344,7 @@ static struct lib_callback_func is_lib_cb_func = {
 	.io_callback		= is_lib_io_callback,
 };
 
-static int __nocfi __is_extra_chain_create(struct is_lib_isp *this, u32 chain_id, ulong base_addr)
+static int __is_extra_chain_create(struct is_lib_isp *this, u32 chain_id, ulong base_addr)
 {
 	int ret = 0;
 
@@ -358,7 +358,7 @@ static int __nocfi __is_extra_chain_create(struct is_lib_isp *this, u32 chain_id
 	return ret;
 }
 
-int __nocfi is_lib_isp_chain_create(struct is_hw_ip *hw_ip,
+int is_lib_isp_chain_create(struct is_hw_ip *hw_ip,
 	struct is_lib_isp *this, u32 instance_id)
 {
 	int ret = 0;
@@ -481,7 +481,7 @@ int __nocfi is_lib_isp_chain_create(struct is_hw_ip *hw_ip,
 	return ret;
 }
 
-int __nocfi is_lib_isp_object_create(struct is_hw_ip *hw_ip,
+int is_lib_isp_object_create(struct is_hw_ip *hw_ip,
 	struct is_lib_isp *this, u32 instance_id, u32 rep_flag, u32 f_type)
 {
 	int ret;
@@ -557,7 +557,7 @@ int __nocfi is_lib_isp_object_create(struct is_hw_ip *hw_ip,
 	return ret;
 }
 
-void __nocfi is_lib_isp_chain_destroy(struct is_hw_ip *hw_ip,
+void is_lib_isp_chain_destroy(struct is_hw_ip *hw_ip,
 	struct is_lib_isp *this, u32 instance_id)
 {
 	int ret = 0;
@@ -613,7 +613,7 @@ void __nocfi is_lib_isp_chain_destroy(struct is_hw_ip *hw_ip,
 	msinfo_lib("chain_destroy done\n", instance_id, hw_ip);
 }
 
-void __nocfi is_lib_isp_object_destroy(struct is_hw_ip *hw_ip,
+void is_lib_isp_object_destroy(struct is_hw_ip *hw_ip,
 	struct is_lib_isp *this, u32 instance_id)
 {
 	int ret = 0;
@@ -636,7 +636,7 @@ void __nocfi is_lib_isp_object_destroy(struct is_hw_ip *hw_ip,
 	msinfo_lib("object_destroy done\n", instance_id, hw_ip);
 }
 
-int __nocfi is_lib_isp_set_param(struct is_hw_ip *hw_ip,
+int is_lib_isp_set_param(struct is_hw_ip *hw_ip,
 	struct is_lib_isp *this, void *param)
 {
 	int ret;
@@ -653,7 +653,7 @@ int __nocfi is_lib_isp_set_param(struct is_hw_ip *hw_ip,
 	return ret;
 }
 
-int __nocfi is_lib_isp_set_ctrl(struct is_hw_ip *hw_ip,
+int is_lib_isp_set_ctrl(struct is_hw_ip *hw_ip,
 	struct is_lib_isp *this, struct is_frame *frame)
 {
 	int ret = 0;
@@ -673,7 +673,7 @@ int __nocfi is_lib_isp_set_ctrl(struct is_hw_ip *hw_ip,
 	return 0;
 }
 
-int __nocfi is_lib_isp_shot(struct is_hw_ip *hw_ip,
+int is_lib_isp_shot(struct is_hw_ip *hw_ip,
 	struct is_lib_isp *this, void *param_set, struct camera2_shot *shot)
 {
 	int ret = 0;
@@ -699,7 +699,7 @@ int __nocfi is_lib_isp_shot(struct is_hw_ip *hw_ip,
 	return ret;
 }
 
-int __nocfi is_lib_isp_get_meta(struct is_hw_ip *hw_ip,
+int is_lib_isp_get_meta(struct is_hw_ip *hw_ip,
 	struct is_lib_isp *this, struct is_frame *frame)
 
 {
@@ -720,7 +720,7 @@ int __nocfi is_lib_isp_get_meta(struct is_hw_ip *hw_ip,
 	return ret;
 }
 
-int __nocfi is_lib_isp_get_cap_meta(struct is_hw_ip *hw_ip,
+int is_lib_isp_get_cap_meta(struct is_hw_ip *hw_ip,
 	struct is_lib_isp *this, u32 instance_id, u32 fcount, u32 size, ulong addr)
 
 {
@@ -741,7 +741,7 @@ int __nocfi is_lib_isp_get_cap_meta(struct is_hw_ip *hw_ip,
 	return ret;
 }
 
-void __nocfi is_lib_isp_stop(struct is_hw_ip *hw_ip,
+void is_lib_isp_stop(struct is_hw_ip *hw_ip,
 	struct is_lib_isp *this, u32 instance_id, u32 immediate)
 {
 	int ret = 0;
@@ -764,7 +764,7 @@ void __nocfi is_lib_isp_stop(struct is_hw_ip *hw_ip,
 	msinfo_lib("object_suspend done. immediate %d\n", instance_id, hw_ip, immediate);
 }
 
-int __nocfi is_lib_isp_create_tune_set(struct is_lib_isp *this,
+int is_lib_isp_create_tune_set(struct is_lib_isp *this,
 	ulong addr, u32 size, u32 index, int flag, u32 instance_id)
 {
 	int ret = 0;
@@ -791,7 +791,7 @@ int __nocfi is_lib_isp_create_tune_set(struct is_lib_isp *this,
 	return ret;
 }
 
-int __nocfi is_lib_isp_apply_tune_set(struct is_lib_isp *this,
+int is_lib_isp_apply_tune_set(struct is_lib_isp *this,
 	u32 index, u32 instance_id, u32 scenario_idx)
 {
 	int ret = 0;
@@ -809,7 +809,7 @@ int __nocfi is_lib_isp_apply_tune_set(struct is_lib_isp *this,
 	return ret;
 }
 
-int __nocfi is_lib_isp_delete_tune_set(struct is_lib_isp *this,
+int is_lib_isp_delete_tune_set(struct is_lib_isp *this,
 	u32 index, u32 instance_id)
 {
 	int ret = 0;
@@ -829,7 +829,7 @@ int __nocfi is_lib_isp_delete_tune_set(struct is_lib_isp *this,
 	return ret;
 }
 
-int __nocfi is_lib_isp_change_chain(struct is_hw_ip *hw_ip,
+int is_lib_isp_change_chain(struct is_hw_ip *hw_ip,
 	struct is_lib_isp *this, u32 instance_id, u32 next_id)
 {
 	int ret = 0;
@@ -847,7 +847,7 @@ int __nocfi is_lib_isp_change_chain(struct is_hw_ip *hw_ip,
 	return ret;
 }
 
-int __nocfi is_lib_isp_load_cal_data(struct is_lib_isp *this,
+int is_lib_isp_load_cal_data(struct is_lib_isp *this,
 	u32 instance_id, ulong addr)
 {
 	char version[32];
@@ -870,7 +870,7 @@ int __nocfi is_lib_isp_load_cal_data(struct is_lib_isp *this,
 	return ret;
 }
 
-int __nocfi is_lib_isp_get_cal_data(struct is_lib_isp *this,
+int is_lib_isp_get_cal_data(struct is_lib_isp *this,
 	u32 instance_id, struct cal_info *c_info, int type)
 {
 	int ret = 0;
@@ -891,7 +891,7 @@ int __nocfi is_lib_isp_get_cal_data(struct is_lib_isp *this,
 	return ret;
 }
 
-int __nocfi is_lib_isp_sensor_info_mode_chg(struct is_lib_isp *this,
+int is_lib_isp_sensor_info_mode_chg(struct is_lib_isp *this,
 	u32 instance_id, struct camera2_shot *shot)
 {
 	int ret = 0;
@@ -911,7 +911,7 @@ int __nocfi is_lib_isp_sensor_info_mode_chg(struct is_lib_isp *this,
 	return ret;
 }
 
-int __nocfi is_lib_isp_sensor_update_control(struct is_lib_isp *this,
+int is_lib_isp_sensor_update_control(struct is_lib_isp *this,
 	u32 instance_id, u32 frame_count, struct camera2_shot *shot)
 {
 	int ret = 0;
@@ -930,7 +930,7 @@ int __nocfi is_lib_isp_sensor_update_control(struct is_lib_isp *this,
 	return ret;
 }
 
-int __nocfi is_lib_isp_reset_recovery(struct is_hw_ip *hw_ip,
+int is_lib_isp_reset_recovery(struct is_hw_ip *hw_ip,
 		struct is_lib_isp *this, u32 instance_id)
 {
 	int ret = 0;
@@ -1049,7 +1049,7 @@ int is_lib_isp_convert_face_map(struct is_hardware *hardware,
 }
 #endif
 
-int __nocfi is_lib_isp_event_notifier(struct is_hw_ip *hw_ip, struct is_lib_isp *this,
+int is_lib_isp_event_notifier(struct is_hw_ip *hw_ip, struct is_lib_isp *this,
 	int instance, u32 fcount, int event_id, u32 strip_index, void *data)
 {
 	int ret;
@@ -1070,7 +1070,7 @@ int __nocfi is_lib_isp_event_notifier(struct is_hw_ip *hw_ip, struct is_lib_isp 
 }
 
 #if IS_ENABLED(ENABLE_3AA_LIC_OFFSET)
-int __nocfi is_lib_set_sram_offset(struct is_hw_ip *hw_ip,
+int is_lib_set_sram_offset(struct is_hw_ip *hw_ip,
 	struct is_lib_isp *this, u32 instance_id)
 {
 	struct is_hardware *hw = NULL;
@@ -1138,7 +1138,7 @@ int __nocfi is_lib_set_sram_offset(struct is_hw_ip *hw_ip,
 }
 #endif
 
-int __nocfi is_lib_get_offline_data(struct is_lib_isp *this, u32 instance,
+int is_lib_get_offline_data(struct is_lib_isp *this, u32 instance,
 	void *data_desc, int fcount)
 {
 	int ret = 0;
@@ -1149,7 +1149,7 @@ int __nocfi is_lib_get_offline_data(struct is_lib_isp *this, u32 instance,
 	return ret;
 }
 
-int __nocfi is_lib_notify_timeout(struct is_lib_isp *this, u32 instance)
+int is_lib_notify_timeout(struct is_lib_isp *this, u32 instance)
 {
 	int ret = 0;
 	struct lib_system_config config;

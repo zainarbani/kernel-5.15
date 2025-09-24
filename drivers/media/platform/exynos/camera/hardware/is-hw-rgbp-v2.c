@@ -232,7 +232,7 @@ static int is_hw_rgbp_set_cmdq(struct is_hw_ip *hw_ip, u32 instance, u32 set_id,
 	return ret;
 }
 
-static int __nocfi is_hw_rgbp_open(struct is_hw_ip *hw_ip, u32 instance)
+static int is_hw_rgbp_open(struct is_hw_ip *hw_ip, u32 instance)
 {
 	int ret = 0;
 	struct is_hw_rgbp *hw_rgbp = NULL;
