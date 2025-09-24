@@ -385,7 +385,7 @@ int is_devicemgr_close(void *device, enum is_device_type type)
 	return ret;
 }
 
-int __nocfi is_devicemgr_shot_callback(struct is_group *group,
+int is_devicemgr_shot_callback(struct is_group *group,
 		struct is_frame *frame,
 		u32 fcount,
 		enum is_device_type type)

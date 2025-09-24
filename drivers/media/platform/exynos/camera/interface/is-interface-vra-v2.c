@@ -131,7 +131,7 @@ void is_lib_vra_task_trigger(struct is_lib_vra *lib_vra,
 	kthread_queue_work(&task_vra->worker, &task_vra->work[work_index].work);
 }
 
-int __nocfi is_lib_vra_invoke_fwalgs_event(struct is_lib_vra *lib_vra)
+int is_lib_vra_invoke_fwalgs_event(struct is_lib_vra *lib_vra)
 {
 	enum api_vpl_type status = VPL_OK;
 
@@ -165,7 +165,7 @@ int __nocfi is_lib_vra_invoke_fwalgs_event(struct is_lib_vra *lib_vra)
 	return 0;
 }
 
-void __nocfi is_lib_vra_task_work(struct kthread_work *work)
+void is_lib_vra_task_work(struct kthread_work *work)
 {
 	struct is_task_work *cur_work;
 	struct is_lib_vra *lib_vra;
@@ -240,7 +240,7 @@ void is_lib_vra_frame_end_process(void *post_frame_info)
 	return;
 }
 
-int __nocfi is_lib_vra_alloc_memory(struct is_lib_vra *lib_vra, ulong dma_addr)
+int is_lib_vra_alloc_memory(struct is_lib_vra *lib_vra, ulong dma_addr)
 {
 	u32 size;
 	enum api_vpl_type status = VPL_OK;
@@ -307,7 +307,7 @@ int is_lib_vra_free_memory(struct is_lib_vra *lib_vra)
 	return 0;
 }
 
-int __nocfi is_lib_vra_init_frame_work(struct is_lib_vra *lib_vra,
+int is_lib_vra_init_frame_work(struct is_lib_vra *lib_vra,
 	void __iomem *base_addr)
 {
 	int ret;
@@ -397,7 +397,7 @@ int is_lib_vra_frame_work_init(struct is_lib_vra *lib_vra,
 	return 0;
 }
 
-int __nocfi is_lib_vra_new_frame(struct is_lib_vra *lib_vra,
+int is_lib_vra_new_frame(struct is_lib_vra *lib_vra,
 	unsigned char *buffer_kva, unsigned char *buffer_dva, u32 instance)
 {
 	enum api_vpl_type status = VPL_OK;
@@ -438,7 +438,7 @@ int __nocfi is_lib_vra_new_frame(struct is_lib_vra *lib_vra,
 	return 0;
 }
 
-int __nocfi is_lib_vra_handle_interrupt(struct is_lib_vra *lib_vra, u32 id)
+int is_lib_vra_handle_interrupt(struct is_lib_vra *lib_vra, u32 id)
 {
 	enum api_vpl_type result;
 
@@ -492,7 +492,7 @@ int is_lib_vra_stop_instance(struct is_lib_vra *lib_vra, u32 instance)
 	return 0;
 }
 
-int __nocfi is_lib_vra_stop(struct is_lib_vra *lib_vra)
+int is_lib_vra_stop(struct is_lib_vra *lib_vra)
 {
 	int ret;
 	int i;
@@ -515,7 +515,7 @@ int __nocfi is_lib_vra_stop(struct is_lib_vra *lib_vra)
 	return 0;
 }
 
-int __nocfi is_lib_vra_frame_work_final(struct is_lib_vra *lib_vra)
+int is_lib_vra_frame_work_final(struct is_lib_vra *lib_vra)
 {
 	enum api_vpl_type result;
 	int ret;
@@ -557,7 +557,7 @@ int __nocfi is_lib_vra_frame_work_final(struct is_lib_vra *lib_vra)
 	return 0;
 }
 
-int __nocfi is_lib_vra_sw_reset(struct is_lib_vra *lib_vra)
+int is_lib_vra_sw_reset(struct is_lib_vra *lib_vra)
 {
 	enum api_vpl_type result;
 
@@ -575,7 +575,7 @@ int __nocfi is_lib_vra_sw_reset(struct is_lib_vra *lib_vra)
 	return 0;
 }
 
-int __nocfi is_lib_vra_run_tracker(struct is_lib_vra *lib_vra, u32 instance,
+int is_lib_vra_run_tracker(struct is_lib_vra *lib_vra, u32 instance,
 	u32 fcount)
 {
 	enum api_vpl_type result;
@@ -752,7 +752,7 @@ void is_lib_vra_assert(void)
 	BUG_ON(1);
 }
 
-void __nocfi is_lib_vra_os_funcs(void)
+void is_lib_vra_os_funcs(void)
 {
 	struct is_lib_vra_os_system_funcs funcs;
 
@@ -782,7 +782,7 @@ void __nocfi is_lib_vra_os_funcs(void)
 	fpsimd_put_func();
 }
 
-int __nocfi is_lib_vra_test_input(struct is_lib_vra *lib_vra, u32 instance)
+int is_lib_vra_test_input(struct is_lib_vra *lib_vra, u32 instance)
 {
 	int ret = 0;
 
@@ -797,7 +797,7 @@ int __nocfi is_lib_vra_test_input(struct is_lib_vra *lib_vra, u32 instance)
 	return ret;
 }
 
-int __nocfi is_lib_vra_dma_input(struct is_lib_vra *lib_vra,
+int is_lib_vra_dma_input(struct is_lib_vra *lib_vra,
 	struct vra_param *param, u32 instance, u32 fcount)
 {
 	int ret = 0;

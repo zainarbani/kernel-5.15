@@ -495,7 +495,7 @@ void pablo_kunit_obte_set_interface(void *itf)
 KUNIT_EXPORT_SYMBOL(pablo_kunit_obte_set_interface);
 #endif
 
-int __nocfi pablo_obte_get_ddk_tuning_interface(void)
+int pablo_obte_get_ddk_tuning_interface(void)
 {
 	if (pablo_obte_use_ddk()) {
 		/* For DDK used APs */
@@ -524,7 +524,7 @@ int __nocfi pablo_obte_get_ddk_tuning_interface(void)
 	return 0;
 }
 
-int __nocfi pablo_obte_init_3aa(u32 instance, bool flag)
+int pablo_obte_init_3aa(u32 instance, bool flag)
 {
 	int ret = 0;
 
@@ -888,7 +888,7 @@ void pablo_obte_set_status(bool enable)
 	obte_status = enable;
 }
 
-int __nocfi pablo_obte_open(struct inode *ip, struct file *fp)
+int pablo_obte_open(struct inode *ip, struct file *fp)
 {
 	dbg_obte("pablo_obte_open\n");
 
@@ -898,7 +898,7 @@ int __nocfi pablo_obte_open(struct inode *ip, struct file *fp)
 	return 0;
 }
 
-static int __nocfi pablo_obte_release(struct inode *ip, struct file *fp)
+static int pablo_obte_release(struct inode *ip, struct file *fp)
 {
 	dbg_obte("pablo_obte_release\n");
 
@@ -908,7 +908,7 @@ static int __nocfi pablo_obte_release(struct inode *ip, struct file *fp)
 	return 0;
 }
 
-ssize_t __nocfi pablo_user_write_json(struct file *file, const char *buf,
+ssize_t pablo_user_write_json(struct file *file, const char *buf,
 				      size_t count, loff_t *ppos)
 {
 	int ret;
@@ -979,7 +979,7 @@ void pablo_obte_copy_register_to_user(dump_register_ip_kernel *reg_dump_ip_info)
 	spin_unlock(&slock_dump);
 }
 
-ssize_t __nocfi pablo_user_read_json(struct file *file, char *buf, size_t count, loff_t *ppos)
+ssize_t pablo_user_read_json(struct file *file, char *buf, size_t count, loff_t *ppos)
 {
 	int ret = 0, i;
 	u32 instance, strip_id;
@@ -1124,7 +1124,7 @@ char *get_ioctl_name(unsigned int cmd)
 	}
 }
 
-int __nocfi pablo_obte_logdump(unsigned long arg)
+int pablo_obte_logdump(unsigned long arg)
 {
 	struct is_minfo *minfo = is_get_is_minfo();
 	size_t write_vptr, read_vptr;
@@ -1201,7 +1201,7 @@ bool pablo_obte_getstatus_ssx(u32 id, pablo_ssx_status_t *curr_status_ptr)
 	return true;
 }
 
-long __nocfi pablo_obte_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+long pablo_obte_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {
 	int ret = 0;
 	u32 data;
@@ -1466,7 +1466,7 @@ long __nocfi pablo_obte_ioctl(struct file *filp, unsigned int cmd, unsigned long
 	return ret;
 }
 
-static long __nocfi pablo_obte_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+static long pablo_obte_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
 	return pablo_obte_ioctl(file, cmd, (unsigned long)compat_ptr(arg));
 }

@@ -304,7 +304,7 @@ static const struct is_field sysreg_mcsc_fields[SYSREG_MCSC_REG_FIELD_CNT] = {
 
 static void __iomem *hwfc_rst;
 
-static inline void __nocfi __is_isr_ddk(void *data, int handler_id)
+static inline void __is_isr_ddk(void *data, int handler_id)
 {
 	struct is_interface_hwip *itf_hw = NULL;
 	struct hwip_intr_handler *intr_hw = NULL;
@@ -339,7 +339,7 @@ static inline void __is_isr_host(void *data, int handler_id)
 /*
  * Interrupt handler definitions
  */
-static void __nocfi __is_isr4_3aax_common(int handler_id)
+static void __is_isr4_3aax_common(int handler_id)
 {
 	struct is_lib_support *lib = is_get_lib_support();
 	struct hwip_intr_handler intr_hw;

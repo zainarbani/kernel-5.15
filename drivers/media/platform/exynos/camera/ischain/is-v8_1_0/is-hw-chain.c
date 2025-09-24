@@ -228,7 +228,7 @@ static struct is_field sysreg_itp_fields[SYSREG_ITP_REG_FIELD_CNT] = {
 
 void __iomem *hwfc_rst;
 
-static inline void __nocfi __is_isr_ddk(void *data, int handler_id)
+static inline void __is_isr_ddk(void *data, int handler_id)
 {
 	struct is_interface_hwip *itf_hw = NULL;
 	struct hwip_intr_handler *intr_hw = NULL;
@@ -1575,7 +1575,7 @@ void is_hw_csi_qchannel_enable_all(bool enable)
 }
 #endif
 
-void __nocfi is_hw_interrupt_relay(struct is_group *group, void *hw_ip_data)
+void is_hw_interrupt_relay(struct is_group *group, void *hw_ip_data)
 {
 	struct is_group *child;
 	struct is_hw_ip *hw_ip = (struct is_hw_ip *)hw_ip_data;

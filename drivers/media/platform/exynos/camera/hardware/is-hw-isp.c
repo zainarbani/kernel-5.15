@@ -15,7 +15,7 @@
 #include "is-votfmgr.h"
 #include "is-hw-yuvpp.h"
 
-static int __nocfi is_hw_isp_open(struct is_hw_ip *hw_ip, u32 instance)
+static int is_hw_isp_open(struct is_hw_ip *hw_ip, u32 instance)
 {
 	int ret = 0;
 	struct is_hw_isp *hw_isp = NULL;
