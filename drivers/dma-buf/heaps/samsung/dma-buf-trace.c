@@ -24,10 +24,15 @@
 
 #if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 #include <soc/samsung/exynos/memlogger.h>
+#define prlogger(memlog_obj, fmt, ...) ((memlog_obj) ? \
+		 dmabuf_memlog_write_printf(memlog_obj, fmt, ##__VA_ARGS__) : \
+		 pr_info(fmt, ##__VA_ARGS__))
 
 #define dmabuf_memlog_write_printf(memlog_obj, fmt, ...) \
 	memlog_write_printf(memlog_obj, MEMLOG_LEVEL_NOTICE, fmt, ##__VA_ARGS__)
 #else
+struct memlog_obj { };
+#define prlogger(memlog_obj, fmt, ...)	pr_info(fmt, ##__VA_ARGS__)
 #define dmabuf_memlog_write_printf(memlog_obj, fmt, ...) do { } while (0)
 #endif
 
@@ -152,10 +157,6 @@ static int dmabuf_trace_buffer_size_compare(const void *p1, const void *p2)
 		return -1;
 	return 0;
 }
-
-#define prlogger(memlog_obj, fmt, ...) ((memlog_obj) ? \
-		 dmabuf_memlog_write_printf(memlog_obj, fmt, ##__VA_ARGS__) : \
-		 pr_info(fmt, ##__VA_ARGS__))
 
 void __show_dmabuf_trace_info(struct memlog_obj *obj)
 {
