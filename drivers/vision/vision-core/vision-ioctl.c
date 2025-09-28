@@ -68,7 +68,7 @@ static void put_vs4l_ctrl64(struct vs4l_ctrl *kp, struct vs4l_ctrl __user *up)
 
 	ret = copy_to_user(up, kp, sizeof(struct vs4l_ctrl));
 	if (ret)
-		vision_err("Failed to copy to user at ctrl.\n", ret);
+		vision_err("Failed to copy to user at ctrl, ret=%d\n", ret);
 }
 
 
@@ -439,7 +439,7 @@ static int put_vs4l_container64(struct vs4l_container_list *kp,
 		ksize = kp->containers[i].count * sizeof(struct vs4l_buffer);
 		ret = copy_to_user((void *)temp.containers[i].buffers, (void *)kp->containers[i].buffers, ksize);
 		if (ret) {
-			vision_err("Failed to copy to user at version.\n", ret);
+			vision_err("Failed to copy to user at version, ret=%d\n", ret);
 		}
 	}
 
@@ -799,7 +799,7 @@ static int put_vs4l_version(struct vs4l_version *kp,
 	ret = copy_to_user(temp.build_info, kp->build_info,
 			   strlen(kp->build_info) + 1);
 	if (ret) {
-		vision_err("Failed to copy to user at version.\n", ret);
+		vision_err("Failed to copy to user at version, ret=%d\n", ret);
 		goto p_err_version;
 	}
 
@@ -807,7 +807,7 @@ static int put_vs4l_version(struct vs4l_version *kp,
 	ret = copy_to_user(temp.signature, kp->signature,
 			   strlen(kp->signature) + 1);
 	if (ret) {
-		vision_err("Failed to copy to user at version.\n", ret);
+		vision_err("Failed to copy to user at version, ret=%d\n", ret);
 		goto p_err_version;
 	}
 
@@ -815,7 +815,7 @@ static int put_vs4l_version(struct vs4l_version *kp,
 	ret = copy_to_user(temp.driver_version, kp->driver_version,
 			   strlen(kp->driver_version) + 1);
 	if (ret) {
-		vision_err("Failed to copy to user at version.\n", ret);
+		vision_err("Failed to copy to user at version, ret=%d\n", ret);
 		goto p_err_version;
 	}
 
@@ -823,14 +823,14 @@ static int put_vs4l_version(struct vs4l_version *kp,
 	ret = copy_to_user(temp.fw_version, kp->fw_version,
 			   strlen(kp->fw_version));
 	if (ret) {
-		vision_err("Failed to copy to user at version.\n", ret);
+		vision_err("Failed to copy to user at version, ret=%d\n", ret);
 		goto p_err_version;
 	}
 
 	if (unlikely(chk_compat)) MASK_COMPAT_UPTR(temp.fw_hash);
 	ret = copy_to_user(temp.fw_hash, kp->fw_hash, strlen(kp->fw_hash));
 	if (ret) {
-		vision_err("Failed to copy to user at version.\n", ret);
+		vision_err("Failed to copy to user at version, ret=%d\n", ret);
 		goto p_err_version;
 	}
 
@@ -872,7 +872,9 @@ static long __vertex_ioctl(struct file *file, unsigned int cmd,
 
 	type = cmd & 0xff;
 	now = ktime_to_us(ktime_get_boottime());
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 	npu_log_ioctl_set_date(cmd, 0);
+#endif
 	switch (cmd) {
 	case VS4L_VERTEXIOC_S_GRAPH:
 		ret = get_vs4l_graph64(&vs4l_kvar.vsg,
@@ -1132,7 +1134,9 @@ static long __vertex_ioctl(struct file *file, unsigned int cmd,
 		npu_profile[type].type = type;
 	}
 
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 	npu_log_ioctl_set_date(cmd, 1);
+#endif
 	return ret;
 }
 

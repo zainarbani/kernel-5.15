@@ -29,6 +29,13 @@
 #define vision_info_target(fmt, ...)	npu_log_on_lv_target(MEMLOG_LEVEL_CAUTION, fmt, ##__VA_ARGS__)
 #define vision_dbg_target(fmt, ...)	npu_log_on_lv_target(MEMLOG_LEVEL_INFO, fmt, ##__VA_ARGS__)
 #define vision_dump_target(fmt, ...)	npu_dump_on_lv_target(MEMLOG_LEVEL_ERR, fmt, ##__VA_ARGS__)  // dump
+#else
+#define vision_err_target(fmt, ...)     pr_debug(fmt, ##__VA_ARGS__)
+#define vision_warn_target(fmt, ...)	pr_debug(fmt, ##__VA_ARGS__)
+#define vision_info_target(fmt, ...)	pr_debug(fmt, ##__VA_ARGS__)
+#define vision_dbg_target(fmt, ...)     pr_debug(fmt, ##__VA_ARGS__)
+#define vision_dump_target(fmt, ...)	pr_debug(fmt, ##__VA_ARGS__)
+#endif
 
 #define vision_err(fmt, args...) \
 	vision_err_target("VIS:[" NPU_LOG_TAG "][ERR]%s(%d):" fmt, __func__, __LINE__, ##args)
@@ -41,19 +48,5 @@
 
 #define vision_dump(fmt, args...) \
 	vision_dump_target("VIS:[" NPU_LOG_TAG "]%s(%d):" fmt, __func__, __LINE__, ##args)
-#else
-#define vision_err_target(fmt, ...)	pr_err(fmt, ##__VA_ARGS__)
-#define vision_warn_target(fmt, ...)	pr_warn(fmt, ##__VA_ARGS__)
-#define vision_info_target(fmt, ...)	pr_info(fmt, ##__VA_ARGS__)
-#define vision_dbg_target(fmt, ...)	pr_debug(fmt, ##__VA_ARGS__)
 
-#define vision_err(fmt, args...) \
-	vision_err_target("VIS:[ERR]%s:%d:" fmt, __func__, __LINE__, ##args)
-
-#define vision_info(fmt, args...) \
-	vision_info_target("VIS:" fmt, ##args)
-
-#define vision_dbg(fmt, args...) \
-	vision_dbg_target("VIS:" fmt, ##args)
-#endif
 #endif

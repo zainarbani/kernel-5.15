@@ -2706,9 +2706,10 @@ int set_cpu_affinity(unsigned long *task_cpu_affinity)
 	int ret;
 
 	ret = set_cpus_allowed_ptr(npu_proto_drv.ast.thread_ref, to_cpumask(task_cpu_affinity));
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 	if (unlikely(ret))
 		npu_warn("fail(%d) in set_cpus_allowed_ptr(%u)\n", ret, task_cpu_affinity);
-
+#endif
 	return ret;
 }
 int proto_drv_open(struct npu_device *npu_device)

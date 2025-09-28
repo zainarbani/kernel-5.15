@@ -26,8 +26,9 @@
 #include <linux/smp.h>
 #if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 #include <soc/samsung/exynos/memlogger.h>
-#else
-#include "npu-device.h"
+// Why???
+// #else
+// #include "npu-device.h"
 #endif
 #include "npu-common.h"
 #include "npu-ver-info.h"
@@ -284,13 +285,13 @@ inline void npu_log_ipc_set_date(int h2fctrl, int wptr, int rptr);
 #define npu_trace_target(fmt, ...)	npu_log_on_lv_target(MEMLOG_LEVEL_NOTICE, fmt, ##__VA_ARGS__)  // performance
 #define npu_dump_target(fmt, ...)	npu_dump_on_lv_target(MEMLOG_LEVEL_ERR, fmt, ##__VA_ARGS__)  // dump
 #else
-#define npu_err_target(fmt, ...)	printk(KERN_ERR fmt, ##__VA_ARGS__)
-#define npu_warn_target(fmt, ...)	printk(KERN_WARNING fmt, ##__VA_ARGS__)
-#define npu_info_target(fmt, ...)	printk(KERN_WARNING fmt, ##__VA_ARGS__)
-#define npu_notice_target(fmt, ...)	printk(KERN_WARNING fmt, ##__VA_ARGS__)
-#define npu_dbg_target(fmt, ...)	printk(KERN_WARNING fmt, ##__VA_ARGS__)
-#define npu_trace_target(fmt, ...)	printk(KERN_WARNING fmt, ##__VA_ARGS__)
-#define npu_dump_target(fmt, ...)	printk(KERN_WARNING fmt, ##__VA_ARGS__)
+#define npu_err_target(fmt, ...)	pr_debug(fmt, ##__VA_ARGS__)
+#define npu_warn_target(fmt, ...)	pr_debug(fmt, ##__VA_ARGS__)
+#define npu_info_target(fmt, ...)	pr_debug(fmt, ##__VA_ARGS__)
+#define npu_notice_target(fmt, ...)	pr_debug(fmt, ##__VA_ARGS__)
+#define npu_dbg_target(fmt, ...)	pr_debug(fmt, ##__VA_ARGS__)
+#define npu_trace_target(fmt, ...)	pr_debug(fmt, ##__VA_ARGS__)
+#define npu_dump_target(fmt, ...)	pr_debug(fmt, ##__VA_ARGS__)
 #endif  // IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 
 #define npu_err(fmt, args...) \
