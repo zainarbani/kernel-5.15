@@ -503,7 +503,7 @@ static int is_hw_orbmch_handle_interrupt(u32 id, void *context)
 	return 0;
 }
 
-static int __nocfi is_hw_orbmch_open(struct is_hw_ip *hw_ip, u32 instance)
+static int is_hw_orbmch_open(struct is_hw_ip *hw_ip, u32 instance)
 {
 	int ret;
 	struct is_hw_orbmch *hw_orbmch;

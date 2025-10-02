@@ -77,7 +77,9 @@ int npu_nw_mbox_ops_get(struct msgid_pool *pool, struct proto_req_nw **target)
 			(*target)->nw.msgid = -1;
 			(*target)->nw.result_code = nw.result_code;
 			(*target)->nw.result_value = nw.result_value;
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 			npu_log_protodrv_set_data(&(*target)->nw, PROTO_DRV_REQ_TYPE_NW, false);
+#endif
 			ret = 1;
 		} else {
 			npu_err("failed to find request mapped with msgid[%d]\n", msgid);
@@ -115,7 +117,9 @@ int npu_nw_mbox_ops_put(struct msgid_pool *pool, struct proto_req_nw *src)
 		npu_utrace("nw_post_request failed. Reclaiming msgid(%d)\n", &src->nw, msgid);
 		msgid_claim(pool, msgid);
 	}
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 	npu_log_protodrv_set_data(&src->nw, PROTO_DRV_REQ_TYPE_NW, true);
+#endif
 	return ret;
 }
 
@@ -244,7 +248,9 @@ int npu_frame_mbox_ops_get(struct msgid_pool *pool, struct proto_req_frame **tar
 					session->uid, (*target)->frame.uid, msgid, (*target)->frame.frame_id,
 					(*target)->frame.output->index, (void *)&(*target)->frame);
 #endif
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 			npu_log_protodrv_set_data(&(*target)->frame, PROTO_DRV_REQ_TYPE_FRAME, false);
+#endif
 			ret = 1;
 		} else {
 			npu_err("failed to find request mapped with msgid[%d]\n", msgid);
@@ -304,8 +310,9 @@ int npu_kpi_frame_mbox_ops_get(struct msgid_pool *pool, struct npu_frame **targe
 				}
 			}
 #endif
-
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 			npu_log_protodrv_set_data(*target, PROTO_DRV_REQ_TYPE_FRAME, false);
+#endif
 			ret = 1;
 		} else {
 			npu_err("failed to find request mapped with msgid[%d]\n", msgid);
@@ -342,7 +349,9 @@ int npu_frame_mbox_ops_put(struct msgid_pool *pool, struct proto_req_frame *src)
 		npu_uftrace("frame_post_request failed. Reclaiming msgid(%d)\n", &src->frame, msgid);
 		msgid_claim(pool, msgid);
 	}
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 	npu_log_protodrv_set_data(&src->frame, PROTO_DRV_REQ_TYPE_FRAME, true);
+#endif
 	return ret;
 }
 
@@ -373,7 +382,9 @@ int npu_kpi_frame_mbox_put(struct msgid_pool *pool, struct npu_frame *frame)
 		npu_uftrace("frame_post_request failed. Reclaiming msgid(%d)\n", frame, msgid);
 		msgid_claim(pool, msgid);
 	}
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 	npu_log_protodrv_set_data(frame, PROTO_DRV_REQ_TYPE_FRAME, true);
+#endif
 	return ret;
 }
 

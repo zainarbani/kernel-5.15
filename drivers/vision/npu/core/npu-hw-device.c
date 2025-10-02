@@ -105,7 +105,9 @@ static int npu_hwdev_default_boot(struct npu_hw_device *hdev, bool on)
 		}
 		hdev->status = NPU_HWDEV_STATUS_PWR_CLK_OFF;
 	}
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 	npu_log_hwdev_set_data(hdev->id);
+#endif
 	npu_info("%s (%d)\n", on ? "on" : "off", ret);
 	return ret;
 }

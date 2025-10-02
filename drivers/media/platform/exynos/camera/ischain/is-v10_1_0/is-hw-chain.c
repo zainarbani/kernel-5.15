@@ -108,7 +108,7 @@ static const struct is_field sysreg_csis_fields[SYSREG_CSIS_REG_FIELD_CNT] = {
 	{"MIPI_RESETN_DCPHY_S", 0, 1, RW, 0x0},
 };
 
-static inline void __nocfi __is_isr_ddk(void *data, int handler_id)
+static inline void __is_isr_ddk(void *data, int handler_id)
 {
 	struct is_interface_hwip *itf_hw = NULL;
 	struct hwip_intr_handler *intr_hw = NULL;

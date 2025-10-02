@@ -690,7 +690,7 @@ static int is_hw_pdp_stat_end_callback(void *user, void *ctx, void *rsp_msg)
 	return 0;
 }
 
-static void __nocfi pdp_worker_stat0(struct work_struct *data)
+static void pdp_worker_stat0(struct work_struct *data)
 {
 	struct is_pdp *pdp;
 	struct paf_action *pa, *temp;
@@ -740,7 +740,7 @@ static void __nocfi pdp_worker_stat0(struct work_struct *data)
 	}
 }
 
-static void __nocfi pdp_worker_stat1(struct work_struct *data)
+static void pdp_worker_stat1(struct work_struct *data)
 {
 	struct is_pdp *pdp;
 	struct paf_action *pa, *temp;
@@ -1001,7 +1001,7 @@ int pdp_unregister_notifier(struct v4l2_subdev *subdev, enum itf_vc_stat_type ty
 	return 0;
 }
 
-void __nocfi pdp_notify(struct v4l2_subdev *subdev, unsigned int type, void *data)
+void pdp_notify(struct v4l2_subdev *subdev, unsigned int type, void *data)
 {
 	struct is_pdp *pdp;
 	struct paf_action *pa, *temp;

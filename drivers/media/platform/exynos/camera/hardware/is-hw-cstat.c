@@ -684,7 +684,7 @@ static int is_hw_cstat_isr2(u32 hw_id, void *data)
 	return 0;
 }
 
-static int __nocfi is_hw_cstat_open(struct is_hw_ip *hw_ip, u32 instance)
+static int is_hw_cstat_open(struct is_hw_ip *hw_ip, u32 instance)
 {
 	int ret, sd_id;
 	struct is_hw_cstat *hw;

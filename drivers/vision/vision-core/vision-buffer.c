@@ -175,6 +175,7 @@ static struct vb_fmt vb_fmts[] = {
 	}
 };
 
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 void __vb_buffer_print(struct vb_container_list *c)
 {
 	if (!c || !c->containers)
@@ -192,19 +193,24 @@ void __vb_buffer_print(struct vb_container_list *c)
 	vision_dump("bundle clist buffer daddr = 0x%llx\n",
 		    c->containers->buffers->daddr);
 }
+#endif
 
 #ifndef CONFIG_NPU_KUNIT_TEST
 void __vb_queue_print(struct vb_queue *q)
 {
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 	struct vb_bundle *bundle, *temp;
+#endif
 
 	if (!q)
 		return;
 
 	vision_dump("----------queued(%d)----------\n", atomic_read(&q->queued_count));
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 	list_for_each_entry_safe(bundle, temp, &q->queued_list, queued_entry) {
 		__vb_buffer_print(&bundle->clist);
 	}
+#endif
 	vision_dump("------------------------------\n");
 }
 #endif
@@ -582,7 +588,9 @@ static int __vb_queue_check(struct vb_bundle *bundle,
 	return ret;
 
 p_err:
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 	__vb_buffer_print(clist);
+#endif
 	return ret;
 }
 

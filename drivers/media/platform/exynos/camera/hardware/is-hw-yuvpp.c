@@ -24,7 +24,7 @@ static spinlock_t ypp_out_slock;
 static int debug_ypp;
 module_param(debug_ypp, int, 0644);
 
-static inline void __nocfi __is_hw_ypp_ddk_isr(struct is_interface_hwip *itf_hw, int handler_id)
+static inline void __is_hw_ypp_ddk_isr(struct is_interface_hwip *itf_hw, int handler_id)
 {
 	struct hwip_intr_handler *intr_hw = NULL;
 
@@ -273,7 +273,7 @@ static int __is_hw_ypp_init_config(struct is_hw_ip *hw_ip, u32 instance, struct 
 	return ret;
 }
 
-static int __nocfi is_hw_ypp_open(struct is_hw_ip *hw_ip, u32 instance)
+static int is_hw_ypp_open(struct is_hw_ip *hw_ip, u32 instance)
 {
 	int ret = 0;
 	struct is_hw_ypp *hw_ypp = NULL;

@@ -1358,7 +1358,7 @@ static int is_hw_isp_handle_dns_interrupt(u32 id, void *context)
 	return 0;
 }
 
-static int __nocfi is_hw_isp_open(struct is_hw_ip *hw_ip, u32 instance)
+static int is_hw_isp_open(struct is_hw_ip *hw_ip, u32 instance)
 {
 	int ret, i;
 	struct is_hw_isp *hw_isp;

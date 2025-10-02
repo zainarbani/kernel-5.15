@@ -387,7 +387,9 @@ static int npu_set_cmd(struct message *msg, struct command *cmd, u32 cmdType)
 	ret = mbx_ipc_put(NPU_MBOX_BASE((void *)interface.mbox_hdr), ctrl, msg, cmd);
 	if (ret)
 		goto I_ERR;
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 	npu_log_ipc_set_date(cmdType, ctrl->rptr, ctrl->wptr);
+#endif
 	ret = __send_interrupt(msg->command, cmd, cmdType);
 	if (ret)
 		goto I_ERR;

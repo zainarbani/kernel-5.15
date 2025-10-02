@@ -294,9 +294,11 @@ void npu_smc_write_hw_reg(const struct npu_iomem_area *base,
 
 	v = ((u32)v_tmp & (~mask)) | (val & mask);
 
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 	if (!silent)
 		npu_dbg("calling smc pa(0x%08x) va(%u) cur_val(0x%08x), val(0x%08x) mask(0x%08x) write(0x%08x)\n",
 			base->paddr + offset, reg_addr, v_tmp, val, mask, v);
+#endif
 	exynos_smc(SMC_CMD_REG, SMC_REG_ID_SFR_W((int)reg_addr), v, 0x0);
 
 	npu_dbg("smc (0x%08x) at (%u)\n", v, reg_addr);
@@ -484,7 +486,7 @@ int npu_cmd_map(struct npu_system *system, const char *cmd_name)
 	BUG_ON(!system);
 	BUG_ON(!cmd_name);
 
-	return npu_cmd_sfr(system, (const struct reg_cmd_list *)get_npu_cmd_map(system, cmd_name), 0);
+	return npu_cmd_sfr(system, (const struct reg_cmd_list *)get_npu_cmd_map(system, cmd_name), 1); // silent
 }
 
 #ifndef CONFIG_NPU_KUNIT_TEST

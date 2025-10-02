@@ -631,7 +631,7 @@ void is_itf_sudden_stop_wrap(struct is_device_ischain *device, u32 instance, str
 	return;
 }
 
-int __nocfi is_itf_power_down_wrap(struct is_core *core)
+int is_itf_power_down_wrap(struct is_core *core)
 {
 	dbg_hw(2, "%s\n", __func__);
 

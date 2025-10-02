@@ -12,7 +12,7 @@
 #include "is-err.h"
 #include "pablo-fpsimd.h"
 
-static int __nocfi is_hw_3aa_open(struct is_hw_ip *hw_ip, u32 instance)
+static int is_hw_3aa_open(struct is_hw_ip *hw_ip, u32 instance)
 {
 	int ret = 0;
 	struct is_hw_3aa *hw_3aa = NULL;

@@ -120,8 +120,10 @@ void __npu_pm_qos_update_request(struct exynos_pm_qos_request *req,
 							s32 new_value)
 {
 #if IS_ENABLED(CONFIG_EXYNOS_PM_QOS)
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 	npu_log_dvfs_set_data(req->exynos_pm_qos_class,
 			exynos_pm_qos_read_req_value(req->exynos_pm_qos_class, req), new_value);
+#endif
 	exynos_pm_qos_update_request(req, new_value);
 #endif
 }
@@ -1486,7 +1488,9 @@ int npu_scheduler_set_freq(struct npu_scheduler_dvfs_info *d, void *req, u32 fre
 
 	__npu_pm_qos_update_request(target_req, freq);
 
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 	npu_log_dvfs_set_data(target_req->exynos_pm_qos_class, *cur_freq, freq);
+#endif
 
 	*cur_freq = freq;
 
@@ -2312,7 +2316,9 @@ static void npu_scheduler_work(struct work_struct *work)
 #if IS_ENABLED(CONFIG_NPU_USE_PI_DTM)
 	npu_scheduler_DTM(info);
 #endif
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 	npu_log_scheduler_set_data(info->device);
+#endif
 
 	queue_delayed_work(info->sched_wq, &info->sched_work,
 			msecs_to_jiffies(info->period));
@@ -3494,7 +3500,9 @@ int npu_scheduler_open(struct npu_device *device)
 		info->mode = NPU_PERF_MODE_NORMAL;
 #if IS_ENABLED(CONFIG_NPU_USE_LLC)
 		npu_set_llc(info);
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 		npu_log_scheduler_set_data(info->device);
+#endif
 #endif
 	}
 
@@ -3536,7 +3544,9 @@ int npu_scheduler_open(struct npu_device *device)
 	npu_arbitration_cancel_work(info);
 	npu_arbitration_queue_work(info);
 #endif
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 	npu_log_scheduler_set_data(info->device);
+#endif
 	return ret;
 }
 
@@ -3865,7 +3875,9 @@ static void npu_scheduler_set_llc(struct npu_session *sess, u32 size)
 	}
 
 	npu_set_llc(g_npu_scheduler_info);
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 	npu_log_scheduler_set_data(g_npu_scheduler_info->device);
+#endif
 	npu_scheduler_send_mode_to_hw(sess, g_npu_scheduler_info);
 #endif
 }
@@ -3880,7 +3892,9 @@ void npu_scheduler_send_wait_info_to_hw(struct npu_session *session,
 	if (info->wait_hw_boot_flag) {
 		info->wait_hw_boot_flag = 0;
 		npu_set_llc(info);
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 		npu_log_scheduler_set_data(info->device);
+#endif
 		ret = npu_scheduler_send_mode_to_hw(session, info);
 		if (ret < 0)
 			npu_err("send_wait_info_to_hw error %d\n", ret);
@@ -4008,11 +4022,15 @@ npu_s_param_ret npu_scheduler_param_handler(struct npu_session *sess, struct vs4
 #if IS_ENABLED(CONFIG_NPU_USE_LLC)
 #if !IS_ENABLED(CONFIG_NPU_USE_LLC_PRESET)
 				npu_set_llc(g_npu_scheduler_info);
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 				npu_log_scheduler_set_data(g_npu_scheduler_info->device);
+#endif
 				npu_scheduler_send_mode_to_hw(sess, g_npu_scheduler_info);
 #else
 				npu_scheduler_set_llc(sess, npu_kpi_llc_size(g_npu_scheduler_info));
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 				npu_log_scheduler_set_data(g_npu_scheduler_info->device);
+#endif
 #endif
 #endif
 				npu_dbg("new NPU performance mode : %s\n",
@@ -4023,7 +4041,9 @@ npu_s_param_ret npu_scheduler_param_handler(struct npu_session *sess, struct vs4
 					param->offset);
 			ret = S_PARAM_NOMB;
 		}
+#if IS_ENABLED(CONFIG_EXYNOS_MEMORY_LOGGER)
 		npu_log_scheduler_set_data(g_npu_scheduler_info->device);
+#endif
 		break;
 
 	case NPU_S_PARAM_PRIORITY:
