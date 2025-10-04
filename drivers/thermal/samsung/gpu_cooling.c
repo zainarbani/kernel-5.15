@@ -34,6 +34,7 @@
 #include "exynos_tmu.h"
 #include "../thermal_core.h"
 #include "exynos_acpm_tmu.h"
+#include <soc/samsung/s5e8835_clk_gpu.h>
 
 /**
  * struct power_table - frequency to power conversion
@@ -797,6 +798,12 @@ static struct thermal_zone_device* parse_ect_cooling_level(struct thermal_coolin
 	for (i = 0; i < function->num_of_range; ++i) {
 		unsigned long max_level = 0;
 		int level;
+
+#ifdef CONFIG_SOC_S5E8835_GPU_OC
+		if (function->range_list[i].max_frequency == GPU_FREQ_STOCK_KHZ_MAX) {
+			function->range_list[i].max_frequency = GPU_FREQ_KHZ_MAX;
+		}
+#endif
 
 		temperature = function->range_list[i].lower_bound_temperature;
 		freq = function->range_list[i].max_frequency;
