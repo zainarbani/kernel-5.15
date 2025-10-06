@@ -8,6 +8,7 @@
 #include <linux/version.h>
 #include <linux/firmware.h>
 #include <linux/fs.h>
+#include <linux/namei.h>
 #if KERNEL_VERSION(4, 15, 0) <= LINUX_VERSION_CODE
 #include <linux/uaccess.h>
 #else
@@ -587,7 +588,8 @@ EXPORT_SYMBOL(mx140_exe_path);
 /* Try to auto detect f/w directory */
 int mx140_basedir_file(struct scsc_mx *mx)
 {
-	int r = 0;
+    int err;
+    struct path path;
 
 	/* Already worked out base dir. This is
 	 * static if auto-detect is off.
@@ -595,20 +597,23 @@ int mx140_basedir_file(struct scsc_mx *mx)
 	if (base_dir[0] != '\0')
 		return 0;
 
-	/* Try /vendor partition  (post-Oreo) */
-	strlcpy(base_dir, MX140_FW_BASE_DIR_VENDOR_ETC_WIFI, sizeof(base_dir));
-	fw_base_dir = MX140_FW_BASE_DIR_VENDOR_ETC_WIFI;
+	fw_base_dir = MX140_FW_BASE_DIR_VENDOR_ETC_WIFI; /* /vendor/etc/wifi */
+
+	err = kern_path(fw_base_dir, LOOKUP_FOLLOW, &path);
+
+	if (err) {
+		fw_base_dir = CONFIG_SCSC_CORE_FW_LOCATION; /* /vendor/firmware/wifi */
+	} else {
+		path_put(&path);
+	}
+
+	strlcpy(base_dir, fw_base_dir, sizeof(base_dir));
 	strlcpy(exe_dir, MX140_EXE_DIR_VENDOR, sizeof(exe_dir));
-#if defined(SCSC_SEP_VERSION) && (SCSC_SEP_VERSION < 8)
-	/* Try /system partition (pre-Oreo) */
-	strlcpy(base_dir, MX140_FW_BASE_DIR_SYSTEM_ETC_WIFI, sizeof(base_dir));
-	fw_base_dir = MX140_FW_BASE_DIR_SYSTEM_ETC_WIFI;
-	strlcpy(exe_dir, MX140_EXE_DIR_SYSTEM, sizeof(exe_dir));
-#endif
 
 	SCSC_TAG_INFO(MX_FILE, "WLBT base_dir is %s\n", base_dir[0] ? base_dir : "not found");
 	SCSC_TAG_INFO(MX_FILE, "WLBT fw_base_dir is %s\n", fw_base_dir[0] ? fw_base_dir : "not found");
-	return r;
+
+	return 0;
 }
 
 /* Select file for h/w version from filesystem */
