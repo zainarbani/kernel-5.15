@@ -10,6 +10,8 @@
                     <0 284 4>;
        interrupt-names = "JOB", "MMU", "GPU";
        g3d_cmu_cal_id = <184811528>;
+       clock-names = "gpu_clock";
+       clocks = <87 2200>;
        power-domains = <47>;
        g3d_genpd_name = "pd_g3d";
        #cooling-cells = <2>;
