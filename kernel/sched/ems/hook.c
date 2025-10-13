@@ -115,6 +115,11 @@ static void ems_hook_cpu_cgroup_can_attach(void *data,
 	ems_cpu_cgroup_can_attach(tset, *retval);
 }
 
+static void ems_hook_rvh_cpu_cgroup_online(void *data, struct cgroup_subsys_state *css)
+{
+	ems_rvh_cpu_cgroup_online(css);
+}
+
 static void ems_hook_rebalance_domains(void *data,
 			struct rq *rq, int *continue_balancing)
 {
@@ -320,6 +325,10 @@ int hook_init(void)
 		return ret;
 
 	ret = register_trace_android_rvh_cpu_cgroup_can_attach(ems_hook_cpu_cgroup_can_attach, NULL);
+	if (ret)
+		return ret;
+
+	ret = register_trace_android_rvh_cpu_cgroup_online(ems_hook_rvh_cpu_cgroup_online, NULL);
 	if (ret)
 		return ret;
 

@@ -29,6 +29,10 @@ enum task_cgroup {
 	CGROUP_COUNT,
 };
 
+extern char *task_cgroup_name[];
+
+#define CGROUP_MAP_SIZE 32
+
 /*
  * Maximum supported-by-vendor processors.  Setting this smaller saves quite a
  * bit of memory.  Use nr_cpu_ids instead of this except for static bitmaps.
@@ -202,6 +206,7 @@ extern void ems_replace_next_task_fair(struct rq *rq, struct task_struct **p_ptr
 				       struct sched_entity **se_ptr, bool *repick,
 				       bool simple, struct task_struct *prev);
 extern void ems_cpu_cgroup_can_attach(struct cgroup_taskset *tset, int can_attach);
+extern void ems_rvh_cpu_cgroup_online(struct cgroup_subsys_state *css);
 extern int ems_load_balance(struct rq *rq);
 extern void ems_post_init_entity_util_avg(struct sched_entity *se);
 extern int ems_find_new_ilb(struct cpumask *nohz_idle_cpus_mask);
@@ -987,6 +992,7 @@ static inline bool is_busy_cpu(int cpu)
 
 extern int get_sched_class(struct task_struct *p);
 extern int cpuctl_task_group_idx(struct task_struct *p);
+extern void ems_init_cgroup_map(struct cgroup_subsys_state *css);
 extern const struct cpumask *cpu_coregroup_mask(int cpu);
 extern const struct cpumask *cpu_slowest_mask(void);
 extern const struct cpumask *cpu_fastest_mask(void);

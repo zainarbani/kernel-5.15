@@ -421,6 +421,34 @@ int get_sched_class(struct task_struct *p)
 	return 1 << class_idx;
 }
 
+static int cgroup_map[CGROUP_MAP_SIZE];
+
+static inline struct task_group *css_tg(struct cgroup_subsys_state *css)
+{
+	return css ? container_of(css, struct task_group, css) : NULL;
+}
+
+void ems_init_cgroup_map(struct cgroup_subsys_state *css)
+{
+	const char *cgroup_name = css_tg(css)->css.cgroup->kn->name;
+	int idx = css->id - 1;
+	int ems_idx = CGROUP_ROOT;
+	int i;
+
+	for (i = 0; i < CGROUP_COUNT; i++) {
+		if (strcmp(cgroup_name, task_cgroup_name[i]) == 0) {
+			ems_idx = i;
+			break;
+		}
+	}
+
+	if (idx < CGROUP_MAP_SIZE) {
+		cgroup_map[idx] = ems_idx;
+		pr_info("%s: '%s' cgroup idx=%d -> ems_idx=%d\n",
+			__func__, cgroup_name, idx + 1, ems_idx);
+	}
+}
+
 int cpuctl_task_group_idx(struct task_struct *p)
 {
 	int idx;
@@ -429,6 +457,8 @@ int cpuctl_task_group_idx(struct task_struct *p)
 	rcu_read_lock();
 	css = task_css(p, cpu_cgrp_id);
 	idx = css->id - 1;
+	if (idx < CGROUP_MAP_SIZE)
+		idx = cgroup_map[idx];
 	rcu_read_unlock();
 
 	/* if customer add new group, use the last group */
@@ -718,6 +748,11 @@ void ems_cpu_cgroup_can_attach(struct cgroup_taskset *tset, int can_attach)
 {
 	if (!can_attach)
 		freqboost_can_attach(tset);
+}
+
+void ems_rvh_cpu_cgroup_online(struct cgroup_subsys_state *css)
+{
+	ems_init_cgroup_map(css);
 }
 
 /* If EMS allows load balancing, return 0 */
