@@ -209,6 +209,7 @@ char *task_cgroup_name[] = {
 	"rt",
 	"system",
 	"system-background",
+	"dex2oat",
 	"nnapi-hal",
 	"camera-daemon",
 	"midground",
