@@ -103,7 +103,9 @@ KBUILD_CFLAGS	+= -Wa,-march=$(asm-arch) \
 		   -DARM64_ASM_ARCH='"$(asm-arch)"'
 endif
 
+ifeq ($(CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE_O3), y)
 KBUILD_CFLAGS += $(call cc-option,-mcpu=cortex-a78)
+endif
 
 ifeq ($(CONFIG_SHADOW_CALL_STACK), y)
 KBUILD_CFLAGS	+= -ffixed-x18
