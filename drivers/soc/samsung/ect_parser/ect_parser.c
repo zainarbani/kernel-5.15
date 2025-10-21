@@ -2506,7 +2506,7 @@ struct ect_new_timing_param_size *ect_new_timing_param_get_key(void *block, unsi
 	return NULL;
 }
 #endif
-#if IS_ENABLED(CONFIG_SOC_S5E8835_CPU_OC)
+#if IS_ENABLED(CONFIG_SOC_S5E8835_CPU_OC) || IS_ENABLED(CONFIG_SOC_S5E8835_GPU_OC)
 int set_ect_custom_max_freq(void)
 {
 	struct ect_info *gen_param_info;
@@ -2582,7 +2582,7 @@ int ect_parse_binary_header(void)
 		}
 	}
 
-#if IS_ENABLED(CONFIG_SOC_S5E8835_CPU_OC)
+#if IS_ENABLED(CONFIG_SOC_S5E8835_CPU_OC) || IS_ENABLED(CONFIG_SOC_S5E8835_GPU_OC)
 	if (set_ect_custom_max_freq() != 0) {
 		pr_warn("%s: Failed to set custom max freq!\n", __func__);
 	}
