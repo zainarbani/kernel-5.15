@@ -407,6 +407,19 @@ struct ect_info
 	int block_precedence;
 };
 
+#if IS_ENABLED(CONFIG_SOC_S5E8835_CPU_OC)
+struct ect_custom {
+	const char *tbl_name;
+	unsigned int col_max;
+	unsigned int freq_max;
+};
+
+static struct ect_custom ect_custom_max_freqs[] = {
+	{ .tbl_name = "MCPUCL1", .col_max = 3, .freq_max = 2700 }, // BIG
+	{ .tbl_name = "VCPUCL1", .col_max = 1, .freq_max = 2704 }, // BIG
+};
+#endif
+
 #if defined(CONFIG_ECT) || defined(CONFIG_ECT_MODULE)
 void ect_init(phys_addr_t address, phys_addr_t size);
 int ect_parse_binary_header(void);
