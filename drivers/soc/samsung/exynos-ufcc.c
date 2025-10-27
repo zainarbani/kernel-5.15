@@ -24,6 +24,7 @@
 #include <linux/pm_opp.h>
 #include <linux/sched.h>
 #include <linux/ems.h>
+#include <linux/notifier.h>
 
 #include <soc/samsung/exynos-cpupm.h>
 #include <soc/samsung/exynos-ufcc.h>
@@ -628,6 +629,35 @@ static void update_limit_stat(void)
 		}
 	}
 }
+
+#if IS_ENABLED(CONFIG_SOC_S5E8835_CPU_OC)
+static int ufc_sysbusy_callback(struct notifier_block *nb, unsigned long event, void *data)
+{
+	int *next_state = (int *)data;
+
+	if (event != SYSBUSY_STATE_CHANGE)
+		return NOTIFY_OK;
+
+	switch (*next_state) {
+	case SYSBUSY_STATE2:
+		ufc_update_request(USERSPACE, PM_QOS_MAX_LIMIT, 2496000);
+		pr_debug("%s: state = %d, max freq = 2496000 kHz\n", __func__, SYSBUSY_STATE2);
+		break;
+	case SYSBUSY_STATE3:
+		ufc_update_request(USERSPACE, PM_QOS_MAX_LIMIT, 2400000);
+		pr_debug("%s: state = %d, max freq = 2400000 kHz\n", __func__, SYSBUSY_STATE3);
+		break;
+	default:
+		break;
+	}
+
+	return NOTIFY_OK;
+}
+
+static struct notifier_block ufc_sysbusy_notifier = {
+    .notifier_call = ufc_sysbusy_callback,
+};
+#endif
 
 /*********************************************************************/
 /*  PM QoS handling - User Freuency Control                          */
@@ -1599,6 +1629,21 @@ static int exynos_ufcc_probe(struct platform_device *pdev)
 	if (ret)
 		return ret;
 
+#if IS_ENABLED(CONFIG_SOC_S5E8835_CPU_OC)
+	ret = sysbusy_register_notifier(&ufc_sysbusy_notifier);
+	if (ret)
+		pr_err("Failed to register ufc_sysbusy_notifier\n");
+#endif
+
+	return 0;
+}
+
+static int exynos_ufcc_remove(struct platform_device *pdev)
+{
+#if IS_ENABLED(CONFIG_SOC_S5E8835_CPU_OC)
+	sysbusy_unregister_notifier(&ufc_sysbusy_notifier);
+#endif
+
 	return 0;
 }
 
@@ -1615,6 +1660,7 @@ static struct platform_driver exynos_ufcc_driver = {
 		.of_match_table = of_exynos_ufcc_match,
 	},
 	.probe		= exynos_ufcc_probe,
+	.remove     = exynos_ufcc_remove,
 };
 
 static int __init exynos_ufcc_init(void)
