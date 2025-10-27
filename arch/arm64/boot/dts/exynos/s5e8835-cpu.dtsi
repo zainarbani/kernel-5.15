@@ -1,6 +1,30 @@
 #include <linux/kconfig.h>
 
 /{
+    exynos-dsufreq {
+        compatible = "samsung,exynos-dsufreq";
+        status = "okay";
+        cal-id = <0xb040004>;
+        dm-type = <0x04>;
+        dss-type = <0x0b>;
+#if IS_ENABLED(CONFIG_SOC_S5E8835_CPU_OC)
+        max-freq = <1586000>;
+#else
+        max-freq = <1352000>;
+#endif
+        min-freq = <0x82208>;
+
+        request_domain0 {
+            device_type = "cpudsu-table";
+            constraint = <0xda>;
+        };
+
+        request_domain1 {
+            device_type = "cpudsu-table";
+            constraint = <0xdc>;
+        };
+    };
+
 	exynos-ufcc {
 		compatible = "samsung,exynos-ufcc";
 		status = "okay";
