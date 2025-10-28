@@ -76,31 +76,36 @@ u64 gpex_clock_get_time_busy(int level)
 /*******************************************
  * static helper functions
  ******************************************/
+static struct freq_volt custom_g3d_asv[] = {
+    { .freq = 1152000, .volt = 793750 },
+    { .freq = 1053000, .volt = 743750 },
+    { .freq = 949000,  .volt = 693750 },
+    { .freq = 845000,  .volt = 650000 },
+    { .freq = 754000,  .volt = 612500 },
+    { .freq = 650000,  .volt = 587500 },
+    { .freq = 552000,  .volt = 562500 },
+    { .freq = 455000,  .volt = 550000 },
+    { .freq = 351000,  .volt = 531250 },
+    { .freq = 221000,  .volt = 506250 },
+    { .freq = 100000,  .volt = 506250 },
+};
+
 static int gpex_clock_update_config_data_from_dt(void)
 {
-	int ret = 0;
-	struct freq_volt *fv_array;
+	struct freq_volt *fv_array = custom_g3d_asv;
 	int asv_lv_num;
 	int i, j;
 
 	clk_info.gpu_max_clock = gpexbe_devicetree_get_int(gpu_max_clock);
 	clk_info.gpu_min_clock = gpexbe_devicetree_get_int(gpu_min_clock);
 	clk_info.boot_clock = gpexbe_clock_get_boot_freq();
-	clk_info.gpu_max_clock_limit = gpexbe_clock_get_max_freq();
+	clk_info.gpu_max_clock_limit = gpexbe_devicetree_get_int(gpu_max_clock);
 
 	/* TODO: rename the table_size variable to something more sensible like  row_cnt */
 	clk_info.table_size = gpexbe_devicetree_get_int(gpu_dvfs_table_size.row);
 	clk_info.table = kcalloc(clk_info.table_size, sizeof(gpu_clock_info), GFP_KERNEL);
 
-	asv_lv_num = gpexbe_clock_get_level_num();
-	fv_array = kcalloc(asv_lv_num, sizeof(*fv_array), GFP_KERNEL);
-
-	if (!fv_array)
-		return -ENOMEM;
-
-	ret = gpexbe_clock_get_rate_asv_table(fv_array, asv_lv_num);
-	if (!ret)
-		GPU_LOG(MALI_EXYNOS_ERROR, "Failed to get G3D ASV table from CAL IF\n");
+	asv_lv_num = ARRAY_SIZE(custom_g3d_asv);
 
 	for (i = 0; i < asv_lv_num; i++) {
 		int cal_freq = fv_array[i].freq;
@@ -116,8 +121,6 @@ static int gpex_clock_update_config_data_from_dt(void)
 			}
 		}
 	}
-
-	kfree(fv_array);
 
 	return 0;
 }

@@ -18,10 +18,11 @@
        governor = "interactive";
        interactive_info = <650000 94 0>;
 #if IS_ENABLED(CONFIG_SOC_S5E8835_GPU_OC)
-       gpu_dvfs_table_size = <9 8>; /* <row col> */
+       gpu_dvfs_table_size = <10 8>; /* <row col> */
        /* 8 columns      freq   down   up  stay      mif   little middle    big */
-       gpu_dvfs_table = <1053000  82   100    5  2093000  1248000      0      0
-                         949000   78   97     5  1794000  1069000      0      0
+       gpu_dvfs_table = <1152000  85   100    5  2093000  1248000      0      0
+                         1053000  82   98     5  2093000  1152000      0      0
+                         949000   78   95     5  1794000  1069000      0      0
                          845000   78   95     5  1541000  1069000      0      0
                          754000   78   95     5  1352000  1069000      0      0
                          650000   78   95     3  1352000  1069000      0      0
@@ -29,7 +30,7 @@
                          455000   78   90     1  1014000        0      0      0
                          351000   78   85     1   845000        0      0      0
                          221000    0   85     1   676000        0      0      0>;
-       gpu_max_clock = <1053000>;
+       gpu_max_clock = <1152000>;
        gpu_min_clock = <221000>;
 #else
        gpu_dvfs_table_size = <8 8>; /* <row col> */

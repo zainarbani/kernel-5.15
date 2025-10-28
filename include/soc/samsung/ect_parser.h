@@ -420,8 +420,8 @@ static struct ect_custom ect_custom_max_freqs[] = {
 	{ .tbl_name = "VCPUCL1", .col_max = 1, .freq_max = 2704 }, // BIG
 #endif
 #if IS_ENABLED(CONFIG_SOC_S5E8835_GPU_OC)
-	{ .tbl_name = "MG3D", .col_max = 3, .freq_max = 1053 }, // G3D
-	{ .tbl_name = "VG3D", .col_max = 1, .freq_max = 1053 }, // G3D
+	{ .tbl_name = "MG3D", .col_max = 3, .freq_max = 1152 }, // G3D
+	{ .tbl_name = "VG3D", .col_max = 1, .freq_max = 1152 }, // G3D
 #endif
 };
 #endif
