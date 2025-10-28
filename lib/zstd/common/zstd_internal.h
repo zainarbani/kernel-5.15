@@ -44,10 +44,6 @@
 /*-*************************************
 *  shared macros
 ***************************************/
-#undef MIN
-#undef MAX
-#define MIN(a,b) ((a)<(b) ? (a) : (b))
-#define MAX(a,b) ((a)>(b) ? (a) : (b))
 #define BOUNDED(min,val,max) (MAX(min,MIN(val,max)))
 
 
