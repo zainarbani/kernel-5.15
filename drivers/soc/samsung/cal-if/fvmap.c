@@ -431,11 +431,6 @@ int fvmap_get_raw_voltage_table(unsigned int id)
 	return 0;
 }
 
-#ifdef CONFIG_SOC_S5E8835_UNDERVOLT
-#define S5E8835_CL0_DM_ID 2 // Set domain_id for CPUCL0 here.
-#define S5E8835_CL1_DM_ID 3 // Set domain_id for CPUCL1 here.
-#endif
-
 static void fvmap_copy_from_sram(void __iomem *map_base, void __iomem *sram_base)
 {
 	struct fvmap_header *fvmap_header, *header;
@@ -500,7 +495,7 @@ static void fvmap_copy_from_sram(void __iomem *map_base, void __iomem *sram_base
 #ifdef CONFIG_SOC_S5E8835_UNDERVOLT
 #if CONFIG_SOC_S5E8835_CL0_UV != 0
 		/* Apply undervolt if the domain is CPUCL0 */
-		if (fvmap_header[i].domain_id == S5E8835_CL0_DM_ID) {
+		if (strcmp(vclk->name, "CPUCL0") == 0) {
 			for (j = 0; j < fvmap_header[i].num_of_lv; j++) {
 				old->table[j].volt = (old->table[j].volt * (100 - CONFIG_SOC_S5E8835_CL0_UV)) / 100;
 			}
@@ -509,7 +504,7 @@ static void fvmap_copy_from_sram(void __iomem *map_base, void __iomem *sram_base
 
 #if CONFIG_SOC_S5E8835_CL1_UV != 0
 		/* Apply undervolt if the domain is CPUCL1 */
-		if (fvmap_header[i].domain_id == S5E8835_CL1_DM_ID) {
+		if (strcmp(vclk->name, "CPUCL1") == 0) {
 			for (j = 0; j < fvmap_header[i].num_of_lv; j++) {
 				if (old->table[j].rate <= 2002000)
 					old->table[j].volt = (old->table[j].volt * (100 - CONFIG_SOC_S5E8835_CL1_UV)) / 100;
@@ -521,6 +516,7 @@ static void fvmap_copy_from_sram(void __iomem *map_base, void __iomem *sram_base
 		}
 #endif
 #endif
+
 		for (j = 0; j < fvmap_header[i].num_of_members; j++) {
 			clks = sram_base + fvmap_header[i].o_members;
 
