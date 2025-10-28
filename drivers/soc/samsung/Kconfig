@@ -440,6 +440,15 @@ config SOC_S5E8835_CL1_UV
 	  Percentage to undervolt the big cluster of the S5E8835 SoC.
 	  Set a value between 0 and 100.
 
+config SOC_S5E8835_G3D_UV
+	int "Undervolting percentage for GPU of S5E8835"
+	range 0 100
+	depends on SOC_S5E8835_UNDERVOLT
+	default 0
+	help
+	  Percentage to undervolt the GPU of the S5E8835 SoC.
+	  Set a value between 0 and 100.
+
 source "drivers/soc/samsung/acpm/Kconfig"
 source "drivers/soc/samsung/exynos/Kconfig"
 source "drivers/soc/samsung/xperf/Kconfig"

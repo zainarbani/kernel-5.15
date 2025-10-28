@@ -112,6 +112,13 @@ static int gpex_clock_update_config_data_from_dt(void)
 		int cal_vol = fv_array[i].volt;
 		dt_clock_item *dt_clock_table = gpexbe_devicetree_get_clock_table();
 
+#ifdef CONFIG_SOC_S5E8835_UNDERVOLT
+#if CONFIG_SOC_S5E8835_G3D_UV != 0
+		if (cal_freq >= 1053000)
+			cal_vol = (fv_array[i].volt * (100 - CONFIG_SOC_S5E8835_G3D_UV)) / 100;
+#endif
+#endif
+
 		if (cal_freq <= clk_info.gpu_max_clock && cal_freq >= clk_info.gpu_min_clock) {
 			for (j = 0; j < clk_info.table_size; j++) {
 				if (cal_freq == dt_clock_table[j].clock) {
