@@ -506,12 +506,7 @@ static void fvmap_copy_from_sram(void __iomem *map_base, void __iomem *sram_base
 		/* Apply undervolt if the domain is CPUCL1 */
 		if (strcmp(vclk->name, "CPUCL1") == 0) {
 			for (j = 0; j < fvmap_header[i].num_of_lv; j++) {
-				if (old->table[j].rate <= 2002000)
-					old->table[j].volt = (old->table[j].volt * (100 - CONFIG_SOC_S5E8835_CL1_UV)) / 100;
-				else if (old->table[j].rate <= 2496000)
-					old->table[j].volt = (old->table[j].volt * (100 - 1)) / 100;
-				else
-					old->table[j].volt = (old->table[j].volt * (100 - 3)) / 100;
+				old->table[j].volt = (old->table[j].volt * (100 - CONFIG_SOC_S5E8835_CL1_UV)) / 100;
 			}
 		}
 #endif
