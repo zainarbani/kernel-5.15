@@ -779,7 +779,7 @@
 				cpus = "4-7";
 				ratio = <0x3e8>;
 #if IS_ENABLED(CONFIG_SOC_S5E8835_CPU_OC)
-				somac_wall = <2700000>;
+				somac_wall = <2500000>;
 #else
 				somac_wall = <2400000>;
 #endif

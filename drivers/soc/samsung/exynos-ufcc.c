@@ -640,12 +640,12 @@ static int ufc_sysbusy_callback(struct notifier_block *nb, unsigned long event, 
 
 	switch (*next_state) {
 	case SYSBUSY_STATE2:
-		ufc_update_request(USERSPACE, PM_QOS_MAX_LIMIT, 2496000);
-		pr_debug("%s: state = %d, max freq = 2496000 kHz\n", __func__, SYSBUSY_STATE2);
+		ufc_update_request(USERSPACE, PM_QOS_MAX_LIMIT, 2400000);
+		pr_debug("%s: state = %d, max freq = 2400000 kHz\n", __func__, SYSBUSY_STATE2);
 		break;
 	case SYSBUSY_STATE3:
-		ufc_update_request(USERSPACE, PM_QOS_MAX_LIMIT, 2400000);
-		pr_debug("%s: state = %d, max freq = 2400000 kHz\n", __func__, SYSBUSY_STATE3);
+		ufc_update_request(USERSPACE, PM_QOS_MAX_LIMIT, 2304000);
+		pr_debug("%s: state = %d, max freq = 2304000 kHz\n", __func__, SYSBUSY_STATE3);
 		break;
 	default:
 		break;
