@@ -30,6 +30,9 @@
 #include <soc/samsung/exynos-ufcc.h>
 #include <soc/samsung/freq-qos-tracer.h>
 
+#define CPD_CONTROL 0
+#define C2_CONTROL 1
+
 /*********************************************************************/
 /*  UCC feature - User C-state Control                               */
 /*********************************************************************/
@@ -41,11 +44,13 @@ static struct _ucc {
 
 	int			num_of_config;
 	/*
-	 * config : indicate whether each cpu supports c-state
+	 * c2_allowed_mask : indicate whether each cpu supports c2-state
+	 * cpd_allowed_mask : indicate whether each cpu supports cpd-state
 	 *   - mask bit set : c-state allowed
 	 *   - mask bit unset : c-state disallowed
 	 */
-	struct cpumask		*config;
+	struct cpumask 		*c2_allowed_mask;
+	struct cpumask		*cpd_allowed_mask;
 
 	struct list_head	req_list;
 
@@ -124,10 +129,11 @@ static inline void update_ucc_allowed_mask(void)
 	if (ucc.cur_value < 0)
 		return;
 
-	if (ucc.cur_level)
-		update_idle_allowed_mask(&ucc.config[ucc.cur_value]);
-	else
-		update_pm_allowed_mask(&ucc.config[ucc.cur_value]);
+	if (ucc.cur_level == C2_CONTROL) {
+		update_idle_allowed_mask(&ucc.c2_allowed_mask[ucc.cur_value]);
+	} else if (ucc.cur_level == CPD_CONTROL) {
+		update_pm_allowed_mask(&ucc.cpd_allowed_mask[ucc.cur_value]);
+	}
 }
 
 static void update_ucc_level(int level)
@@ -261,18 +267,23 @@ static DEVICE_ATTR_RO(ucc_requests);
 static ssize_t status_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
-	struct cpumask mask;
+	struct cpumask c2_allowed_mask;
+	struct cpumask cpd_allowed_mask;
 	int ret = 0;
 
-	if (ucc.cur_value < 0)
-		cpumask_copy(&mask, cpu_possible_mask);
-	else
-		cpumask_copy(&mask, &ucc.config[ucc.cur_value]);
+	if (ucc.cur_value < 0) {
+		cpumask_copy(&c2_allowed_mask, cpu_possible_mask);
+		cpumask_copy(&cpd_allowed_mask, cpu_possible_mask);
+	}
+	else {
+		cpumask_copy(&c2_allowed_mask, &ucc.c2_allowed_mask[ucc.cur_value]);
+		cpumask_copy(&cpd_allowed_mask, &ucc.cpd_allowed_mask[ucc.cur_value]);
+	}
 
 	ret += snprintf(buf + ret, PAGE_SIZE - ret, "current level=%d (%s)\n",
 			ucc.cur_level, ucc.cur_level ? "c2" : "cpd");
-	ret += snprintf(buf + ret, PAGE_SIZE - ret, "current req value=%d (allowed=0x%x)\n",
-			ucc.cur_value, *(unsigned int *)cpumask_bits(&mask));
+	ret += snprintf(buf + ret, PAGE_SIZE - ret, "current req value=%d (c2-allowed=0x%x, cpd-allowed=0x%x)\n",
+			ucc.cur_value, *(unsigned int *)cpumask_bits(&c2_allowed_mask), *(unsigned int *)cpumask_bits(&cpd_allowed_mask));
 
 	return ret;
 }
@@ -361,9 +372,15 @@ static int exynos_ucc_init(struct platform_device *pdev)
 		return 0;
 	}
 
-	ucc.config = kcalloc(ucc.num_of_config, sizeof(struct cpumask), GFP_KERNEL);
-	if (!ucc.config) {
-		pr_info("Failed to alloc ucc.config\n");
+	ucc.c2_allowed_mask = kcalloc(ucc.num_of_config, sizeof(struct cpumask), GFP_KERNEL);
+	if (!ucc.c2_allowed_mask) {
+		pr_info("Failed to alloc ucc.c2_allowed_mask\n");
+		return -ENOMEM;
+	}
+
+	ucc.cpd_allowed_mask = kcalloc(ucc.num_of_config, sizeof(struct cpumask), GFP_KERNEL);
+	if (!ucc.cpd_allowed_mask) {
+		pr_info("Failed to alloc ucc.cpd_allowed_mask\n");
 		return -ENOMEM;
 	}
 
@@ -372,20 +389,27 @@ static int exynos_ucc_init(struct platform_device *pdev)
 		int index;
 
 		if (of_property_read_u32(child, "index", &index)) {
-			kfree(ucc.config);
+			kfree(ucc.c2_allowed_mask);
+			kfree(ucc.cpd_allowed_mask);
 			return -EINVAL;
 		}
 
-		if (of_property_read_string(child, "allowed", &mask))
-			cpumask_clear(&ucc.config[index]);
+		if (of_property_read_string(child, "c2-allowed", &mask))
+			cpumask_clear(&ucc.c2_allowed_mask[index]);
 		else
-			cpulist_parse(mask, &ucc.config[index]);
+			cpulist_parse(mask, &ucc.c2_allowed_mask[index]);
+
+		if (of_property_read_string(child, "cpd-allowed", &mask))
+			cpumask_clear(&ucc.cpd_allowed_mask[index]);
+		else
+			cpulist_parse(mask, &ucc.cpd_allowed_mask[index]);
 	}
 
 	ret = sysfs_create_group(&pdev->dev.kobj, &ucc_attr_group);
 	if (ret) {
 		pr_info("Failed to create ucc sysfs group\n");
-		kfree(ucc.config);
+		kfree(ucc.c2_allowed_mask);
+		kfree(ucc.cpd_allowed_mask);
 		return ret;
 	}
 
@@ -1493,6 +1517,9 @@ static int init_ufc_limit_table(struct device_node *dn)
 	/* Parse default-low-freq table*/
 	child = of_get_child_by_name(dn, "default-low-freq");
 	if (!child)
+		return 0;
+
+	if (of_property_present(child, "disabled"))
 		return 0;
 
 	ufc.low_freq_table = parse_ufc_limit_table(child);

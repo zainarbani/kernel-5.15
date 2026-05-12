@@ -38,16 +38,19 @@
         ucc {
             ucc-config0 {
                 index = <0x00>;
-                allowed = "4-7";
+                c2-allowed = "4-7";
+                cpd-allowed = "4-7";
             };
 
             ucc-config1 {
                 index = <0x01>;
-                allowed = "7";
+                c2-allowed = "7";
+                cpd-allowed = "7";
             };
 
             ucc-config2 {
                 index = <0x02>;
+                cpd-allowed = "7";
             };
         };
 
