@@ -254,6 +254,7 @@ EXPORT_SYMBOL_GPL(emstune_unregister_notifier);
 char *task_cgroup_name[] = {
 	"root",
 	"foreground",
+	"foreground_window",
 	"background",
 	"top-app",
 	"rt",
