@@ -10275,6 +10275,29 @@ cpu_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
 	if (IS_ERR(tg))
 		return ERR_PTR(-ENOMEM);
 
+#ifdef CONFIG_UCLAMP_TASK_GROUP
+	if (tg->css.cgroup && tg->css.cgroup->kn) {
+		const char *cg_name = tg->css.cgroup->kn->name;
+		struct uclamp_request req;
+
+		if (strcmp(cg_name, "background") == 0 ||
+			strcmp(cg_name, "system-background") == 0) {
+			req = capacity_from_percent("50.00");
+			if (!req.ret) {
+				uclamp_se_set(&tg->uclamp_req[UCLAMP_MAX], req.util, false);
+				tg->uclamp_pct[UCLAMP_MAX] = req.percent;
+			}
+		}
+		else if (strcmp(cg_name, "dex2oat") == 0) {
+			req = capacity_from_percent("60.00");
+			if (!req.ret) {
+				uclamp_se_set(&tg->uclamp_req[UCLAMP_MAX], req.util, false);
+				tg->uclamp_pct[UCLAMP_MAX] = req.percent;
+			}
+		}
+	}
+#endif
+
 	trace_android_vh_cpu_cgroup_css_alloc(tg, parent_css);
 
 	return &tg->css;
