@@ -44,7 +44,7 @@ config SEC_BOOTSTAT
 	default n
 	help
 	  This adds support for Samsung boot-stat
-	  To compile this driver as a module, choose M here.
+	  To compile this driver as a module.
 
 config DRV_SAMSUNG
 	tristate "Samsung sec class/sysfs Feature"
